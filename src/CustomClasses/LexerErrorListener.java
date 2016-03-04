@@ -12,23 +12,40 @@ import org.antlr.v4.runtime.Recognizer;
 public class LexerErrorListener extends BaseErrorListener
 {
     private List<SyntaxErrorItem> items;
+    private int errorCount;
     
     public LexerErrorListener ( )
     {
         this.items = new ArrayList<SyntaxErrorItem>();
+        errorCount = 0;
     }
     
     @Override
     public void syntaxError ( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e )
     {
-    	System.out.println("HELLO LEXICAL ERROR");
+    	errorCount ++;
         this.items.add ( new SyntaxErrorItem ( line, charPositionInLine, msg, offendingSymbol, e ) );
     }
- 
-    public boolean hasErrors ( )
-    {
-    	System.out.println("LEXER ERROR COUNT: "+ this.items.size());
-        return this.items.size() > 0;
+    
+    public void setErrorCount(int count){
+    	this.errorCount = count;
+    }
+    
+    public int getErrorCountNum() {
+    	return errorCount;
+    }
+    
+    public boolean hasErrors () 
+    {  	
+    	boolean isResult;
+    	if(this.errorCount!= 0)
+    		isResult = true;
+    	else isResult = false;
+    	return isResult;
+    }
+    
+    public int getErrorCount(){
+    	return this.items.size();
     }
     
     @Override
@@ -38,7 +55,7 @@ public class LexerErrorListener extends BaseErrorListener
         StringBuilder builder = new StringBuilder();
         for ( SyntaxErrorItem s : items )
         {
-            builder.append ( String.format ( "%s\n HELLLO LEXER \n", s ) );
+            builder.append ( String.format ( "%s\n", s ) );
         }
         return builder.toString();
     }

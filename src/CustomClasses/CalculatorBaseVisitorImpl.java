@@ -1,46 +1,65 @@
 package CustomClasses;
+
+import org.antlr.v4.runtime.RecognitionException;
+
 import ANTLRGeneratedClasses.CalculatorBaseVisitor;
 import ANTLRGeneratedClasses.CalculatorParser;
-import ANTLRGeneratedClasses.CalculatorParser.CalculateContext;
-import ANTLRGeneratedClasses.CalculatorParser.DivisionContext;
-import ANTLRGeneratedClasses.CalculatorParser.IntContext;
-import ANTLRGeneratedClasses.CalculatorParser.MinusContext;
-import ANTLRGeneratedClasses.CalculatorParser.MultiplicationContext;
-import ANTLRGeneratedClasses.CalculatorParser.PlusContext;
 
-
-public class CalculatorBaseVisitorImpl extends CalculatorBaseVisitor<Double>{
+public class CalculatorBaseVisitorImpl extends CalculatorBaseVisitor<Integer>{
 	
 	@Override
-	public Double visitCalculate(CalculatorParser.CalculateContext ctx) {
+	public Integer visitCalculate(CalculatorParser.CalculateContext ctx) {
         return visit(ctx.plusOrMinus());
     }
 	
 	@Override
-	public Double visitPlus(CalculatorParser.PlusContext ctx) {
+	public Integer visitPlus(CalculatorParser.PlusContext ctx) {
 		return visit(ctx.plusOrMinus()) + visit(ctx.multOrDiv());
 	}
 	
 	@Override
-	public Double visitMinus(CalculatorParser.MinusContext ctx) {
+	public Integer visitMinus(CalculatorParser.MinusContext ctx) {
 		return visit(ctx.plusOrMinus()) - visit(ctx.multOrDiv());
 	}
 	
 	@Override
-    public Double visitMultiplication(CalculatorParser.MultiplicationContext ctx) {
-        return visit(ctx.multOrDiv()) * Double.parseDouble(ctx.INT().getText());
+    public Integer visitMultiplication(CalculatorParser.MultiplicationContext ctx) {
+        return visit(ctx.multOrDiv()) * visit(ctx.unarySign());
     }
 
     @Override
-    public Double visitDivision(CalculatorParser.DivisionContext ctx) {
-    	Double divisor = Double.parseDouble(ctx.INT().getText());
+    public Integer visitDivision(CalculatorParser.DivisionContext ctx) {
+    	int divisor = visit(ctx.unarySign());
+    	if(divisor == 0){
+    		//AvrilCalculatorRunner.parser.getErrorHandler().reportMatch(arg0);
+    	//	AvrilCalculatorRunner.parser.notifyErrorListeners("You divide by ZERO");
+    	}
+    	return visit(ctx.multOrDiv()) / divisor;  
+    }
+    
+    @Override
+    public Integer visitModulo(CalculatorParser.ModuloContext ctx) {
+		return visit(ctx.multOrDiv()) % visit(ctx.unarySign());
     	
-		return visit(ctx.multOrDiv()) / divisor;
     }
 	
     @Override
-    public Double visitInt(CalculatorParser.IntContext ctx) {
-        return Double.parseDouble(ctx.INT().getText());
+    public Integer visitChangeMinusSign(CalculatorParser.ChangeMinusSignContext ctx){
+    	return -1* visit(ctx.atom());
+    }
+    
+    @Override
+    public Integer visitChangePlusSign(CalculatorParser.ChangePlusSignContext ctx){
+    	return 1* visit(ctx.atom());
+    }
+  
+    @Override
+    public Integer visitInt(CalculatorParser.IntContext ctx) {
+        return Integer.parseInt(ctx.INT().getText());
+    }
+    
+    public Integer visitBraces(CalculatorParser.BracesContext ctx) {
+    	return visit(ctx.plusOrMinus());
     }
 	
 

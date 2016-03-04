@@ -21,13 +21,20 @@ public class ParserErrorListener extends BaseErrorListener
     @Override
     public void syntaxError ( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e )
     {
-    	System.out.println("HELLO PARSER ERROR");
+    	//System.out.println("LINE: "+ line + " chaPositionInLine: "+ charPositionInLine + " MESSAGE: "+ msg);
         items.add ( new SyntaxErrorItem ( line, charPositionInLine, msg, offendingSymbol, e ) );
     }
  
     public boolean hasErrors ( )
     {
-        return this.items.size() > 0;
+    	if(this.items.size()>0)
+    		return true;
+   
+        return false;
+    }
+    
+    public int getErrorCount() {
+    	return items.size();
     }
     
     @Override

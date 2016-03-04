@@ -1,5 +1,7 @@
-package ANTLRGeneratedClasses;
 // Generated from Calculator.g4 by ANTLR 4.5.2
+
+	package ANTLRGeneratedClasses;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -68,6 +70,30 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitMultiplication(CalculatorParser.MultiplicationContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ToUnaryMinus}
+	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * @param ctx the parse tree
+	 */
+	void enterToUnaryMinus(CalculatorParser.ToUnaryMinusContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToUnaryMinus}
+	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * @param ctx the parse tree
+	 */
+	void exitToUnaryMinus(CalculatorParser.ToUnaryMinusContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Modulo}
+	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * @param ctx the parse tree
+	 */
+	void enterModulo(CalculatorParser.ModuloContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Modulo}
+	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * @param ctx the parse tree
+	 */
+	void exitModulo(CalculatorParser.ModuloContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
 	 * @param ctx the parse tree
@@ -80,15 +106,63 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitDivision(CalculatorParser.DivisionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ChangeMinusSign}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 */
+	void enterChangeMinusSign(CalculatorParser.ChangeMinusSignContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ChangeMinusSign}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 */
+	void exitChangeMinusSign(CalculatorParser.ChangeMinusSignContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ChangePlusSign}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 */
+	void enterChangePlusSign(CalculatorParser.ChangePlusSignContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ChangePlusSign}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 */
+	void exitChangePlusSign(CalculatorParser.ChangePlusSignContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToAtom}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 */
+	void enterToAtom(CalculatorParser.ToAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToAtom}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 */
+	void exitToAtom(CalculatorParser.ToAtomContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Int}
-	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * labeled alternative in {@link CalculatorParser#atom}.
 	 * @param ctx the parse tree
 	 */
 	void enterInt(CalculatorParser.IntContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code Int}
-	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * labeled alternative in {@link CalculatorParser#atom}.
 	 * @param ctx the parse tree
 	 */
 	void exitInt(CalculatorParser.IntContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Braces}
+	 * labeled alternative in {@link CalculatorParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterBraces(CalculatorParser.BracesContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Braces}
+	 * labeled alternative in {@link CalculatorParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitBraces(CalculatorParser.BracesContext ctx);
 }

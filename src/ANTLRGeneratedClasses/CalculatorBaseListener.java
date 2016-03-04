@@ -1,5 +1,7 @@
-package ANTLRGeneratedClasses;
 // Generated from Calculator.g4 by ANTLR 4.5.2
+
+	package ANTLRGeneratedClasses;
+
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -16,9 +18,7 @@ public class CalculatorBaseListener implements CalculatorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCalculate(CalculatorParser.CalculateContext ctx) { 
-		    
-	}
+	@Override public void enterCalculate(CalculatorParser.CalculateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -78,6 +78,30 @@ public class CalculatorBaseListener implements CalculatorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterToUnaryMinus(CalculatorParser.ToUnaryMinusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToUnaryMinus(CalculatorParser.ToUnaryMinusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterModulo(CalculatorParser.ModuloContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitModulo(CalculatorParser.ModuloContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDivision(CalculatorParser.DivisionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -90,6 +114,42 @@ public class CalculatorBaseListener implements CalculatorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterChangeMinusSign(CalculatorParser.ChangeMinusSignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitChangeMinusSign(CalculatorParser.ChangeMinusSignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterChangePlusSign(CalculatorParser.ChangePlusSignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitChangePlusSign(CalculatorParser.ChangePlusSignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterToAtom(CalculatorParser.ToAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToAtom(CalculatorParser.ToAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInt(CalculatorParser.IntContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -97,6 +157,18 @@ public class CalculatorBaseListener implements CalculatorListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInt(CalculatorParser.IntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBraces(CalculatorParser.BracesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBraces(CalculatorParser.BracesContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

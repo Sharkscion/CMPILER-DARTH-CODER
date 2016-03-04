@@ -1,5 +1,7 @@
-package ANTLRGeneratedClasses;
 // Generated from Calculator.g4 by ANTLR 4.5.2
+
+	package ANTLRGeneratedClasses;
+
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -46,6 +48,20 @@ public interface CalculatorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiplication(CalculatorParser.MultiplicationContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ToUnaryMinus}
+	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToUnaryMinus(CalculatorParser.ToUnaryMinusContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Modulo}
+	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitModulo(CalculatorParser.ModuloContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
 	 * @param ctx the parse tree
@@ -53,10 +69,38 @@ public interface CalculatorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDivision(CalculatorParser.DivisionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ChangeMinusSign}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChangeMinusSign(CalculatorParser.ChangeMinusSignContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ChangePlusSign}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChangePlusSign(CalculatorParser.ChangePlusSignContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToAtom}
+	 * labeled alternative in {@link CalculatorParser#unarySign}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToAtom(CalculatorParser.ToAtomContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Int}
-	 * labeled alternative in {@link CalculatorParser#multOrDiv}.
+	 * labeled alternative in {@link CalculatorParser#atom}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitInt(CalculatorParser.IntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Braces}
+	 * labeled alternative in {@link CalculatorParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBraces(CalculatorParser.BracesContext ctx);
 }
