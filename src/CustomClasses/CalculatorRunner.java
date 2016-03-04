@@ -96,7 +96,7 @@ public class CalculatorRunner {
 			ParseTree tree = null;
 			tree = parser.start();
 		
-			parser.setErrorHandler(handler);
+			//parser.setErrorHandler(ANTLRErrorStrategy);
 			System.out.println("LexerNum: " + lexerErrorListener.getErrorCountNum());
 			System.out.println("Another LexerNum: " + lexerErrorListener.getErrorCount());
 			System.out.println("PaserNum: " + parserErrorListener.getErrorCount());

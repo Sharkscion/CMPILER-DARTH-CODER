@@ -46,13 +46,14 @@ public class AvrilCalculatorRunner {
 		    	System.out.printf("["+(nIndex+1)+"]");
 		    	FileInput fInput =  inputList.get(nIndex);
 		    	ANTLRInputStream input = new ANTLRInputStream(fInput.getInput());
-		    	
+		    
 		    	LexerErrorListener lexerErrorListener = new LexerErrorListener();
-		    	
+		    	CustomLexerErrorListener listener = new CustomLexerErrorListener();
 		    	//split each input into tokens
 				CalculatorLexer lexer = new CalculatorLexer(input);
 				lexer.removeErrorListeners();
-				lexer.addErrorListener(lexerErrorListener);
+				//lexer.addErrorListener(lexerErrorListener);
+				lexer.addErrorListener(listener);
 				//register tokens
 				CommonTokenStream tokens = new CommonTokenStream(lexer);
 		    	
@@ -63,18 +64,18 @@ public class AvrilCalculatorRunner {
 				
 				parser.removeErrorListeners();
 				parser.addErrorListener(parserErrorListener);
+				parser.setErrorHandler(new BailErrorStrategy());
 				ParseTree tree = parser.start();
 				
-				if(lexerErrorListener.hasErrors()){
-					System.out.println("@LEXICAL ERROR: ");
-					System.out.println(lexerErrorListener);
+				if(listener.hasErrors()){
+					System.out.println(listener);
 				}else{
 					if(parserErrorListener.hasErrors()){
 						System.out.println("@PARSER ERROR: ");
 						System.out.println(parserErrorListener);
 					}
 					
-					if(!lexerErrorListener.hasErrors() && !parserErrorListener.hasErrors()){
+					if(!listener.hasErrors() && !parserErrorListener.hasErrors()){
 						try{
 							ParseTreeWalker walker = new ParseTreeWalker(); 
 						    CalculatorBaseVisitorImpl calcVisitor = new CalculatorBaseVisitorImpl();

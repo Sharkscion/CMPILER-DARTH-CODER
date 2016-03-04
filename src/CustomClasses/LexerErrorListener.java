@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.Recognizer;
 
 public class LexerErrorListener extends BaseErrorListener
 {
-    private List<SyntaxErrorItem> items;
-    private int errorCount;
+    protected List<SyntaxErrorItem> items;
+    protected int errorCount;
     
     public LexerErrorListener ( )
     {
