@@ -1,14 +1,4 @@
-1+3/4-1/(/4-2+2)
-43+35/12-3*(23*53)
-9(24+58/124-0/0)
-3-5+(-583++-39)+9842
-933-934(248-a)
-(234-ap)p(-24)1
-24(285-35=63)/24
-249+543 - 3 + 4
-1 * 34 - 43/5 - (34 + 32)
-ggg*aaaa-3424as
-324(34+34/24*32)
-ga(123*235)
-(0917)-726-2740
-(0918)/23*53( * 35-1)
+Initiate { ForceAnalyze[] {}  }
+Initiate { ForceOrder{ImperialCredit _credit = 32. }ForceAnalyze[_hi <= 1].  }
+Initiate { _hi++. }
+Initiate { EncodeGalacticCredit ["a"]. }

@@ -21,15 +21,15 @@ public class SyntaxErrorItem {
 		this.offendingSymbol = symbol;
 		this.oops = oops;
 	}
-
+	
 	@Override
 	public String toString() {
 		if (oops == null)
-			return String.format("[%d:%d] %s", line, column, msg);
+			return String.format("[%d:%d] %s\n", line, column, msg);
 		else {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
-			oops.printStackTrace(pw);
+			//oops.printStackTrace(pw);
 			pw.close();
 			return String.format("[%d:%d] %s\n%s", line, column, msg,
 					sw.toString());

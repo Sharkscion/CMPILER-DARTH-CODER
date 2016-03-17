@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.Recognizer;
 
 public class LexerErrorListener extends BaseErrorListener
 {
-    protected List<SyntaxErrorItem> items;
-    protected int errorCount;
+    private List<SyntaxErrorItem> items;
+    private int errorCount;
     
     public LexerErrorListener ( )
     {
@@ -25,6 +25,7 @@ public class LexerErrorListener extends BaseErrorListener
     {
     	errorCount ++;
         this.items.add ( new SyntaxErrorItem ( line, charPositionInLine, msg, offendingSymbol, e ) );
+      //  System.out.println("@LEXICAL ERROR: ["+line+":"+charPositionInLine+"] "+msg);
     }
     
     public void setErrorCount(int count){
@@ -55,7 +56,7 @@ public class LexerErrorListener extends BaseErrorListener
         StringBuilder builder = new StringBuilder();
         for ( SyntaxErrorItem s : items )
         {
-            builder.append ( String.format ( "%s\n", s ) );
+            builder.append ( String.format ( "%s",s ) );
         }
         return builder.toString();
     }

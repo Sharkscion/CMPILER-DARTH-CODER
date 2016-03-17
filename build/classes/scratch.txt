@@ -1,0 +1,23 @@
+ImperialCredit _avril <3> = {12}.
+Side _trueOrFalse.
+Side _hi = LightSide.
+Declare Legion _gio = "weirdo".
+ImperialCredit #thisIsAFunc [Legion _a, Unit _b] {a}
+ImperialCredit #thisIsAFunc [] {a}
+ImperialCredit #thisIsAFunc [Legion _a, Unit _b] {}
+ImperialCredit #thisIsAFunc [] {}
+ImperialCredit #thisIsAFunc [Legion _a, Unit _b] {a Transmit 2+3.}
+ImperialCredit #thisIsAFunc [] {a Transmit 'a'.}
+ImperialCredit #thisIsAFunc [Legion _a, Unit _b] {Transmit "swerng".}
+[ 1+2 || 2]
+[1>3 == 3]
+[5>=8 <= 4]
+[5 != 5 == 6 <=4]
+ImperialCredit _avril <3> = {12}.
+ForceInstance [2 < 4] {a} InstanceVariant [4 != 5] {a} InstanceVariant [2 != 3] {a} NoVariant {a}
+#function[12,'a']
+#function[]
+ForceInstance [_hi < 4] {a}
+ForceCommand [_hi = 0. _hi < 7. _hi++.] {a}
+ForceOrder{a} ForceAnalyze[5 < 7].
+ForceAnalyze[_hi != 6] {a}

@@ -30,10 +30,6 @@ public class CalculatorBaseVisitorImpl extends CalculatorBaseVisitor<Integer>{
     @Override
     public Integer visitDivision(CalculatorParser.DivisionContext ctx) {
     	int divisor = visit(ctx.unarySign());
-    	if(divisor == 0){
-    		//AvrilCalculatorRunner.parser.getErrorHandler().reportMatch(arg0);
-    	//	AvrilCalculatorRunner.parser.notifyErrorListeners("You divide by ZERO");
-    	}
     	return visit(ctx.multOrDiv()) / divisor;  
     }
     

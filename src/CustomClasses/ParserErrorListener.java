@@ -23,6 +23,7 @@ public class ParserErrorListener extends BaseErrorListener
     {
     	//System.out.println("LINE: "+ line + " chaPositionInLine: "+ charPositionInLine + " MESSAGE: "+ msg);
         items.add ( new SyntaxErrorItem ( line, charPositionInLine, msg, offendingSymbol, e ) );
+       // System.out.println("@PARSER ERROR: ["+line+":"+charPositionInLine+"] "+msg);
     }
  
     public boolean hasErrors ( )
@@ -44,7 +45,8 @@ public class ParserErrorListener extends BaseErrorListener
         StringBuilder builder = new StringBuilder();
         for ( SyntaxErrorItem s : items )
         {
-            builder.append ( String.format ( "%s\n", s ) );
+        
+            builder.append ( String.format ( "%s", s ) );
         }
         return builder.toString();
     }
