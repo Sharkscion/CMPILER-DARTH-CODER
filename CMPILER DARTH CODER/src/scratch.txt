@@ -21,3 +21,7 @@ ForceInstance [_hi < 4] {a}
 ForceCommand [_hi = 0. _hi < 7. _hi++.] {a}
 ForceOrder{a} ForceAnalyze[5 < 7].
 ForceAnalyze[_hi != 6] {a}
+Initiate { ForceAnalyze[] {}  }
+Initiate { ForceOrder{ImperialCredit _credit = 32. }ForceAnalyze[_hi <= 1].  }
+Initiate { _hi++. }
+Initiate { EncodeGalacticCredit [     "a"   ]. }
