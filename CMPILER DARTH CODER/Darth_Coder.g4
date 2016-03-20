@@ -267,7 +267,8 @@ PRINT
 	;
 
 start
-	: INITIATE OPEN_BRACKET code_block CLOSE_BRACKET
+	: func_dec start
+	| INITIATE OPEN_BRACKET code_block CLOSE_BRACKET
 	//| constant_declaration | var_dec | func_dec | if_conditional | func_call | iterative_con
 	;
 
@@ -295,19 +296,19 @@ epsilon
 //SCANNING AND PRINTING!
 
 scan_imperial_credit
-	: SCAN_FLOAT OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET TERMINAL
+	: SCAN_FLOAT OPEN_SQUARE_BRACKET var_iden CLOSE_SQUARE_BRACKET TERMINAL
 	;
 
 scan_galactic_credit
-	: SCAN_INTEGER OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET TERMINAL
+	: SCAN_INTEGER OPEN_SQUARE_BRACKET var_iden CLOSE_SQUARE_BRACKET TERMINAL
 	;
 	
 scan_unit
-	: SCAN_CHAR OPEN_SQUARE_BRACKET CHARACTER_LITERAL CLOSE_SQUARE_BRACKET TERMINAL
+	: SCAN_CHAR OPEN_SQUARE_BRACKET var_iden CLOSE_SQUARE_BRACKET TERMINAL
 	;
 	
 scan_legion
-	: SCAN_STRING OPEN_SQUARE_BRACKET STRING_LITERAL CLOSE_SQUARE_BRACKET TERMINAL
+	: SCAN_STRING OPEN_SQUARE_BRACKET var_iden CLOSE_SQUARE_BRACKET TERMINAL
 	;
 	
 print
@@ -530,6 +531,7 @@ var
 	: literal
 	| func_call
 	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 
+	| var_iden
 	;
 
 add_sub
@@ -552,8 +554,9 @@ uni_op
 //ARRAYS!
 
 array
-	: array_open index array_close	#Array1
-	| array_open index array_close equal OPEN_BRACKET value? CLOSE_BRACKET #Array2
+	: array_open index array_close	
+	| array_open index array_close equal OPEN_BRACKET value? CLOSE_BRACKET 
+	| array_open index array_close equal var 
 	;
 	
 array_open
@@ -570,11 +573,13 @@ equal
 	
 index
 	: INT_LITERAL
+	| var_iden
+	| expr
 	;
 
 value
-	: literal				#SingleLiteral
-	| literal COMMA WS? value	#MoreLiterals
+	: var				#SingleLiteral
+	| var COMMA WS? value	#MoreLiterals
 	;
 	
 //ATOMS!
