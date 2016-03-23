@@ -97,35 +97,89 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitElse_conditional(Darth_CoderParser.Else_conditionalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#condition}.
+	 * Visit a parse tree produced by the {@code AndExpr}
+	 * labeled alternative in {@link Darth_CoderParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondition(Darth_CoderParser.ConditionContext ctx);
+	T visitAndExpr(Darth_CoderParser.AndExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#condition2}.
+	 * Visit a parse tree produced by the {@code ToCondition2}
+	 * labeled alternative in {@link Darth_CoderParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondition2(Darth_CoderParser.Condition2Context ctx);
+	T visitToCondition2(Darth_CoderParser.ToCondition2Context ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#condition3}.
+	 * Visit a parse tree produced by the {@code ToCondition3}
+	 * labeled alternative in {@link Darth_CoderParser#condition2}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondition3(Darth_CoderParser.Condition3Context ctx);
+	T visitToCondition3(Darth_CoderParser.ToCondition3Context ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#condition4}.
+	 * Visit a parse tree produced by the {@code OrExpr}
+	 * labeled alternative in {@link Darth_CoderParser#condition2}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondition4(Darth_CoderParser.Condition4Context ctx);
+	T visitOrExpr(Darth_CoderParser.OrExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#gen_comparison}.
+	 * Visit a parse tree produced by the {@code EqualityExpr}
+	 * labeled alternative in {@link Darth_CoderParser#condition3}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitGen_comparison(Darth_CoderParser.Gen_comparisonContext ctx);
+	T visitEqualityExpr(Darth_CoderParser.EqualityExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToCondition4}
+	 * labeled alternative in {@link Darth_CoderParser#condition3}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToCondition4(Darth_CoderParser.ToCondition4Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToGenComparison}
+	 * labeled alternative in {@link Darth_CoderParser#condition4}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToGenComparison(Darth_CoderParser.ToGenComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RelationalExpr}
+	 * labeled alternative in {@link Darth_CoderParser#condition4}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelationalExpr(Darth_CoderParser.RelationalExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToExpr}
+	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToExpr(Darth_CoderParser.ToExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotBracketCond}
+	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotBracketCond(Darth_CoderParser.NotBracketCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BracketCond}
+	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBracketCond(Darth_CoderParser.BracketCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToVarIden}
+	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToVarIden(Darth_CoderParser.ToVarIdenContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#rel_op}.
 	 * @param ctx the parse tree

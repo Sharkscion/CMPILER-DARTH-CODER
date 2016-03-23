@@ -2,6 +2,7 @@ package CustomClasses;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 
 import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
 import ANTLRGeneratedClasses.Darth_CoderParser;
+import ANTLRGeneratedClasses.Darth_CoderParser.ConditionContext;
 
 public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
@@ -19,6 +21,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 
     // store variables (there's only one global scope!)
     private Map<String, Value> memory = new HashMap<String, Value>();
+    private Boolean isEvaluated;
 	
 	@Override 
 	public Value visitStart(Darth_CoderParser.StartContext ctx) { 
@@ -143,107 +146,222 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override 
 	public Value visitIf_conditional(Darth_CoderParser.If_conditionalContext ctx) { 
-		return visitChildren(ctx); 
+
+        isEvaluated = false;
+        Value evaluated = this.visit(ctx.condition());
+        if(evaluated.asBoolean()) {
+              isEvaluated = true;
+              this.visit(ctx.code_block());
+        }else{
+        	this.visit(ctx.elseIf_conditional());
+        }
+
+        return Value.VOID; 
 	}
 	
 	@Override 
 	public Value visitElseIf_conditional(Darth_CoderParser.ElseIf_conditionalContext ctx) { 
-		return visitChildren(ctx); 
+		
+		Value evaluated = this.visit(ctx.condition());
+		if(!isEvaluated && ctx.code_block() != null && evaluated.asBoolean()){
+			isEvaluated = true;
+			this.visit(ctx.code_block());
+		}else{
+			this.visit(ctx.else_conditional());
+		}
+		
+	    return Value.VOID; 
 	}
 	
 	@Override 
 	public Value visitElse_conditional(Darth_CoderParser.Else_conditionalContext ctx) { 
-		return visitChildren(ctx); 
+		
+		if(!isEvaluated && ctx.code_block() != null){
+			isEvaluated = true;
+			this.visit(ctx.code_block());
+		}
+		
+	    return Value.VOID; 
 	}
 
 	@Override 
-	public Value visitCondition(Darth_CoderParser.ConditionContext ctx) { 
-		return visitChildren(ctx); 
+	public Value visitAndExpr(Darth_CoderParser.AndExprContext ctx) { 
+		Value left = this.visit(ctx.condition());
+		Value right = this.visit(ctx.condition2());
+		
+		return new Value(left.asBoolean() && right.asBoolean());
 	}
-	
-	@Override 
-	public Value visitCondition2(Darth_CoderParser.Condition2Context ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Value visitCondition3(Darth_CoderParser.Condition3Context ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override public Value visitCondition4(Darth_CoderParser.Condition4Context ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitGen_comparison(Darth_CoderParser.Gen_comparisonContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitRel_op(Darth_CoderParser.Rel_opContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitEqual_op(Darth_CoderParser.Equal_opContext ctx) { 
-		return visitChildren(ctx);
-	}
-	
-	@Override 
-	public Value visitLogi_op(Darth_CoderParser.Logi_opContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitLogi_op2(Darth_CoderParser.Logi_op2Context ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitOr(Darth_CoderParser.OrContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
 	@Override
-	public Value visitAnd(Darth_CoderParser.AndContext ctx) { 
-		return visitChildren(ctx); 
+	public Value visitOrExpr(Darth_CoderParser.OrExprContext ctx) { 
+		Value left = this.visit(ctx.condition2());
+		Value right = this.visit(ctx.condition3());
+		
+		return new Value(left.asBoolean() || right.asBoolean());
 	}
 	
 	@Override 
-	public Value visitNot_equal(Darth_CoderParser.Not_equalContext ctx) {
-		return visitChildren(ctx); 
+	public Value visitEqualityExpr(Darth_CoderParser.EqualityExprContext ctx) { 
+		Value left = this.visit(ctx.condition3());
+		Value right = this.visit(ctx.condition4());
+		
+		switch(ctx.op.getType()){
+			case Darth_CoderParser.NOT_EQUAL:
+				return new Value(left.asBoolean() != right.asBoolean());
+			case Darth_CoderParser.EQUAL_EQUAL:
+				return new Value(left.asBoolean() == right.asBoolean());
+			default:
+				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+
+		}
+	}
+
+	@Override 
+	public Value visitRelationalExpr(Darth_CoderParser.RelationalExprContext ctx) { 
+		Value left = this.visit(ctx.condition4());
+		Value right = this.visit(ctx.gen_comparison());
+
+		double dLeft = Double.parseDouble(left.toString());
+		double dRight = Double.parseDouble(right.toString());
+		 
+		switch(ctx.op.getType()){
+			case Darth_CoderParser.LESS_THAN:
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft < dRight);
+				 } 
+				 else{
+					 return new Value(left.asInt() < right.asInt());
+				 }
+			case Darth_CoderParser.GREATER_THAN:
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft > dRight);
+				 } 
+				 else{
+					 return new Value(left.asInt() > right.asInt());
+				 }
+			case Darth_CoderParser.GREATER_THAN_EQUAL_TO:
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft >= dRight);
+				 } 
+				 else{
+					 return new Value(left.asInt() >= right.asInt());
+				 }
+			case Darth_CoderParser.LESS_THAN_EQUAL_TO:
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft <= dRight);
+				 } 
+				 else{
+					 return new Value(left.asInt() <= right.asInt());
+				 }
+			default:
+				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+
+		}
+	}
+
+	@Override
+	public Value visitNotBracketCond(Darth_CoderParser.NotBracketCondContext ctx) { 
+		Value v = this.visit(ctx.condition());
+		return new Value(!v.asBoolean()); 
 	}
 	
 	@Override 
-	public Value visitEqual_equal(Darth_CoderParser.Equal_equalContext ctx) { 
-		return visitChildren(ctx); 
+	public Value visitBracketCond(Darth_CoderParser.BracketCondContext ctx) { 
+		Value v = this.visit(ctx.condition());
+		return new Value(v.asBoolean()); 
 	}
+
+
 	
-	@Override 
-	public Value visitLess_than(Darth_CoderParser.Less_thanContext ctx) { 
-		return visitChildren(ctx); 
-	}
+//	@Override 
+//	public Value visitCondition(Darth_CoderParser.ConditionContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitCondition2(Darth_CoderParser.Condition2Context ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//
+//	@Override 
+//	public Value visitCondition3(Darth_CoderParser.Condition3Context ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override public Value visitCondition4(Darth_CoderParser.Condition4Context ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitGen_comparison(Darth_CoderParser.Gen_comparisonContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
 	
-	@Override public Value visitGreater_than(Darth_CoderParser.Greater_thanContext ctx) {
-		return visitChildren(ctx); 
-	}
+//	@Override 
+//	public Value visitRel_op(Darth_CoderParser.Rel_opContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitEqual_op(Darth_CoderParser.Equal_opContext ctx) { 
+//		return visitChildren(ctx);
+//	}
+//	
+//	@Override 
+//	public Value visitLogi_op(Darth_CoderParser.Logi_opContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitLogi_op2(Darth_CoderParser.Logi_op2Context ctx) { 
+//		return visitChildren(ctx); 
+//	}
 	
-	@Override 
-	public Value visitGreater_than_or_equal_to(Darth_CoderParser.Greater_than_or_equal_toContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitLess_than_or_equal_to(Darth_CoderParser.Less_than_or_equal_toContext ctx) { 
-		return visitChildren(ctx);
-	}
-	
-	@Override 
-	public Value visitNot(Darth_CoderParser.NotContext ctx) { 
-		return visitChildren(ctx);
-	}
-	
+//	
+//	@Override 
+//	public Value visitOr(Darth_CoderParser.OrContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override
+//	public Value visitAnd(Darth_CoderParser.AndContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitNot_equal(Darth_CoderParser.Not_equalContext ctx) {
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitEqual_equal(Darth_CoderParser.Equal_equalContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitLess_than(Darth_CoderParser.Less_thanContext ctx) { 
+//		
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override public Value visitGreater_than(Darth_CoderParser.Greater_thanContext ctx) {
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitGreater_than_or_equal_to(Darth_CoderParser.Greater_than_or_equal_toContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitLess_than_or_equal_to(Darth_CoderParser.Less_than_or_equal_toContext ctx) { 
+//		return visitChildren(ctx);
+//	}
+//	
+//	@Override 
+//	public Value visitNot(Darth_CoderParser.NotContext ctx) { 
+//		return visitChildren(ctx);
+//	}
+//	
 	@Override 
 	public Value visitFunc_dec(Darth_CoderParser.Func_decContext ctx) {
 		return visitChildren(ctx); 
@@ -313,28 +431,31 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	public Value visitAdditiveExpr(Darth_CoderParser.AdditiveExprContext ctx) { 
 		Value left = this.visit(ctx.expr());
 		Value right = this.visit(ctx.expr2());
-		
-		System.out.println("Left: " + left);
-		System.out.println("Right: " + right);
-		//System.out.println(left.asInt() - right.asInt());
 
+		double dLeft = Double.parseDouble(left.toString());
+		double dRight = Double.parseDouble(right.toString());
+		 
 		switch(ctx.op.getType()){
 			case Darth_CoderParser.PLUS:
-				 if(left.isDouble() && right.isDouble()){
-					 System.out.println("Line 324: HELLO DOUBLE");
-					 return new Value(left.asDouble() + right.asDouble());
+				 if(left.isString() || right.isString())
+					 return new Value(left.asString() + right.asString());
+				 else if (!left.isString() && !right.isString()){
+					 
+					 if(left.isDouble() || right.isDouble()){
+						 return new Value(dLeft + dRight);
+					 } 
+					 else{
+						 return new Value(left.asInt() + right.asInt());
+					 }
 				 }
-				 else if(left.isInt() && right.isInt()) {
-					 System.out.println("Line 328: HELLO INT");
-					 return new Value(left.asInt() + right.asInt());
-				 }
-				else
-				{
-					System.out.println("Line 333: HELLO ELSE");
-					 return new Value(left.asDouble() + Double.valueOf(right.asDouble()));
-				}
+				
 			case Darth_CoderParser.MINUS:
-				 return new Value(left.asDouble() - right.asDouble());
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft - dRight);
+				 }
+				 else
+					 return new Value(left.asInt() - right.asInt());
+				
 			default:
 				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
 			
@@ -345,12 +466,29 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	public Value visitMultiplicativeExpr(Darth_CoderParser.MultiplicativeExprContext ctx) { 
 		Value left = this.visit(ctx.expr2());
 		Value right = this.visit(ctx.gen_var());
-	
+
+		double dLeft = Double.parseDouble(left.toString());
+		double dRight = Double.parseDouble(right.toString());
+		 
 		switch(ctx.op.getType()){
 			case Darth_CoderParser.MULT:
-				 return new Value(left.asDouble() * right.asDouble());
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft * dRight);
+				 }
+				 else
+					 return new Value(left.asInt() * right.asInt());
 			case Darth_CoderParser.DIV:
-				 return new Value(left.asDouble() / right.asDouble());
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft / dRight);
+				 }
+				 else
+					 return new Value(left.asInt() / right.asInt());
+			case Darth_CoderParser.MOD:
+				 if(left.isDouble() || right.isDouble()){
+					 return new Value(dLeft % dRight);
+				 }
+				 else
+					 return new Value(left.asInt() % right.asInt());
 			default:
 				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));	
 		}
@@ -364,49 +502,22 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 			case Darth_CoderParser.NOT:
 				 return new Value(!operand.asBoolean());
 			case Darth_CoderParser.PLUS:
-				return new Value(operand.asDouble());
+				 if(operand.isDouble()){
+					 return new Value(operand.asDouble());
+				 }
+				 else
+					 return new Value(operand.asInt());
 			case Darth_CoderParser.MINUS:
-				return new Value(-1*operand.asDouble());
+				 if(operand.isDouble()){
+					 return new Value(-1*operand.asDouble());
+				 }
+				 else
+					 return new Value(-1*operand.asInt());
 			default:
 				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));	
 		}
 	}
 
-//	@Override 
-//	public Value visitExpr(Darth_CoderParser.ExprContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitExpr2(Darth_CoderParser.Expr2Context ctx) { 
-//		return visitChildren(ctx); 
-//	}
-	
-//	@Override 
-//	public Value visitGen_var(Darth_CoderParser.Gen_varContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-	
-//	@Override 
-//	public Value visitVar(Darth_CoderParser.VarContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-	
-//	@Override 
-//	public Value visitAdd_sub(Darth_CoderParser.Add_subContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//
-//	@Override 
-//	public Value visitMul_div(Darth_CoderParser.Mul_divContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitUni_op(Darth_CoderParser.Uni_opContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
 	@Override 
 	public Value visitArray(Darth_CoderParser.ArrayContext ctx) { 
 		return visitChildren(ctx); 

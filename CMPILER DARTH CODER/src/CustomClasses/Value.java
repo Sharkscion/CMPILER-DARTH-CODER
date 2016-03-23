@@ -25,6 +25,14 @@ public class Value {
         return value instanceof Double;
     }
     
+    public boolean isInt() {
+        return value instanceof Integer;
+    }
+    
+    public boolean isString() {
+        return value instanceof String;
+    }
+    
     public Character asChar() {
     	return (Character)value;
     }

@@ -180,11 +180,11 @@ ARRAY_CLOSE
 	: '>'
 	;
 
-OPEN_BRACKET
+OPEN_BRACES
 	: '{'
 	;
 
-CLOSE_BRACKET
+CLOSE_BRACES
 	: '}'
 	;
 
@@ -262,7 +262,7 @@ PRINT
 
 start
 	: func_dec start
-	| INITIATE OPEN_BRACKET code_block CLOSE_BRACKET
+	| INITIATE OPEN_BRACES code_block CLOSE_BRACES
 	//| constant_declaration | var_dec | func_dec | if_conditional | func_call | iterative_con
 	;
 
@@ -317,15 +317,15 @@ print
 //ITERATIVE CONSTRUCTS!
 
 iterative_con
-	: WHILE OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET
-	| WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET
-	| WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACKET CLOSE_BRACKET
-	| DO OPEN_BRACKET code_block CLOSE_BRACKET WHILE OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET TERMINAL
-	| DO OPEN_BRACKET code_block CLOSE_BRACKET WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET TERMINAL
-	| DO OPEN_BRACKET CLOSE_BRACKET WHILE OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET TERMINAL
-	| DO OPEN_BRACKET CLOSE_BRACKET WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET TERMINAL
-	| FOR OPEN_SQUARE_BRACKET reg_assignment TERMINAL condition TERMINAL incr CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET
-	| FOR OPEN_SQUARE_BRACKET reg_assignment TERMINAL condition TERMINAL incr CLOSE_SQUARE_BRACKET OPEN_BRACKET CLOSE_BRACKET
+	: WHILE OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES
+	| WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES
+	| WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACES CLOSE_BRACES
+	| DO OPEN_BRACES code_block CLOSE_BRACES WHILE OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET TERMINAL
+	| DO OPEN_BRACES code_block CLOSE_BRACES WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET TERMINAL
+	| DO OPEN_BRACES CLOSE_BRACES WHILE OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET TERMINAL
+	| DO OPEN_BRACES CLOSE_BRACES WHILE OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET TERMINAL
+	| FOR OPEN_SQUARE_BRACKET reg_assignment TERMINAL condition TERMINAL incr CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES
+	| FOR OPEN_SQUARE_BRACKET reg_assignment TERMINAL condition TERMINAL incr CLOSE_SQUARE_BRACKET OPEN_BRACES CLOSE_BRACES
 	;	
 	
 //FUNCTION CALL!
@@ -338,47 +338,47 @@ func_call
 //CONDITIONAL STATEMENTS!
 
 if_conditional
-	: IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET
-	| IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET elseIf_conditional
+	: IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES
+	| IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES elseIf_conditional
 	;
 
 elseIf_conditional
-	: ELSE_IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET elseIf_conditional
-	| ELSE_IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block CLOSE_BRACKET
+	: ELSE_IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES elseIf_conditional
+	| ELSE_IF OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET OPEN_BRACES code_block CLOSE_BRACES
 	| else_conditional
 	;
 
 else_conditional
-	: ELSE OPEN_BRACKET code_block CLOSE_BRACKET
+	: ELSE OPEN_BRACES code_block CLOSE_BRACES
 	;	
 	
 //CONDITIONALS!
 // allows 3 conditions :(
 condition
-	: condition AND condition2
-	| condition2
+	: condition AND condition2							#AndExpr
+	| condition2										#ToCondition2
 	;
 	
 condition2
-	: condition2 OR condition3
-	| condition3
+	: condition2 OR condition3							#OrExpr
+	| condition3										#ToCondition3
 	;
 	
 condition3
-	: condition3 op=(NOT EQUAL|EQUAL) condition4
-	| condition4
+	: condition3 op=(NOT_EQUAL|EQUAL_EQUAL) condition4	#EqualityExpr
+	| condition4										#ToCondition4
 	;
 
 condition4
-	: condition4 rel_op gen_comparison
-	| gen_comparison
+	: condition4 op=(LESS_THAN|GREATER_THAN|GREATER_THAN_EQUAL_TO| LESS_THAN_EQUAL_TO) gen_comparison  #RelationalExpr
+	| gen_comparison																				   #ToGenComparison									
 	;
 
 gen_comparison
-	: expr
-	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET
-	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET
-	| var_iden
+	: expr  													#ToExpr
+	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET	#NotBracketCond
+	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET		#BracketCond
+	| var_iden													#ToVarIden
 	;
 
 rel_op
@@ -441,10 +441,10 @@ not
 //FUNCTIONS!
 	
 func_dec
-	: data_type func_iden OPEN_SQUARE_BRACKET parameter CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block return_statement? CLOSE_BRACKET
-	| data_type func_iden OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACKET code_block return_statement? CLOSE_BRACKET
-	| data_type func_iden OPEN_SQUARE_BRACKET parameter CLOSE_SQUARE_BRACKET OPEN_BRACKET return_statement? CLOSE_BRACKET
-	| data_type func_iden OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACKET return_statement? CLOSE_BRACKET
+	: data_type func_iden OPEN_SQUARE_BRACKET parameter CLOSE_SQUARE_BRACKET OPEN_BRACES code_block return_statement? CLOSE_BRACES
+	| data_type func_iden OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACES code_block return_statement? CLOSE_BRACES
+	| data_type func_iden OPEN_SQUARE_BRACKET parameter CLOSE_SQUARE_BRACKET OPEN_BRACES return_statement? CLOSE_BRACES
+	| data_type func_iden OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET OPEN_BRACES return_statement? CLOSE_BRACES
 	;
 	
 return_statement
@@ -517,7 +517,7 @@ expr
 	;
 
 expr2
-	: expr2 op=(MULT|DIV) gen_var 		#MultiplicativeExpr
+	: expr2 op=(MULT|DIV|MOD) gen_var 		#MultiplicativeExpr
 	| gen_var							#ToGenVar
 	;
 
@@ -554,7 +554,7 @@ var
 
 array
 	: array_open index array_close	
-	| array_open index array_close equal OPEN_BRACKET value? CLOSE_BRACKET 
+	| array_open index array_close equal OPEN_BRACES value? CLOSE_BRACES 
 	| array_open index array_close equal var 
 	;
 	
