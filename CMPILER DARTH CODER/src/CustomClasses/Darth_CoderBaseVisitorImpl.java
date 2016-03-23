@@ -415,7 +415,95 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	}
 	
 	@Override 
-	public Value visitVar_dec(Darth_CoderParser.Var_decContext ctx) { 
+	public Value visitVarDecFourTypes(Darth_CoderParser.VarDecFourTypesContext ctx) { 
+		
+		String id = ctx.statement().reg_assignment().var_iden().VAR_IDEN().getText();
+		Value v = this.visit(ctx.statement().reg_assignment().expr());
+		boolean flag = false;
+		
+		if(ctx.data_type().imperial_credit() != null) {
+			//System.out.println("Imperial Credit");
+			
+			if(v.isDouble()) {
+				//System.out.println("Legit Double");
+				memory.put(id, v);
+				flag = true;
+			}
+		}
+		else if (ctx.data_type().galactic_credit() != null) {
+			//System.out.println("Galactic Credit");
+			
+			if(v.isInt()) {
+				//System.out.println("Legit Int");
+				memory.put(id, v);
+				flag = true;
+			}
+		}
+		else if (ctx.data_type().unit() != null) {
+			if(v.isChar()) {
+				//System.out.println("Legit Char");
+				memory.put(id, v);
+				flag = true;
+			}
+		}
+		else if (ctx.data_type().legion() != null) {
+			if(v.isString()) {
+				//System.out.println("Legit String");
+				memory.put(id, v);
+				flag = true;
+			}
+		}
+		
+		if(!flag) {
+			System.out.println("DataType Mismatch");
+		}
+		
+		/*String id = ctx.var_iden().VAR_IDEN().getText();
+		Value value = this.visit(ctx.expr());
+		
+		memory.put(id, value);
+		
+		return value;*/
+		return v;
+		
+		//return visitChildren(ctx);
+	}
+	
+	@Override public Value visitVarDecVarIdenFourTypes(Darth_CoderParser.VarDecVarIdenFourTypesContext ctx) { 
+		
+		/*String datatype = ctx.data_type().getText();
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		
+		//System.out.println("enter");
+		
+		if(ctx.data_type().imperial_credit() != null) {
+			memory.put(new Variable(Variable.IC, id), new Value("hi"));
+			System.out.println(memory.containsKey(new Variable(Variable.IC, id)));
+			System.out.println("Print: " + memory.get(new Variable(Variable.IC, id)));
+			//System.out.println("declared IC");
+		}
+		else if(ctx.data_type().galactic_credit() != null) {
+			memory.put(new Variable(Variable.GC, id), null);
+			//System.out.println("declared GC");
+		}
+		else if(ctx.data_type().unit() != null) {
+			memory.put(new Variable(Variable.UN, id), null);
+			//System.out.println("declared UN");
+		}
+		else if(ctx.data_type().legion() != null) {
+			memory.put(new Variable(Variable.LE, id), null);
+			
+			//System.out.println("declared LE");
+		}
+		return Value.VOID;*/
+		
+		return visitChildren(ctx);
+		
+	}
+	
+	@Override public Value visitVarDecBoolean(Darth_CoderParser.VarDecBooleanContext ctx) { 
+		//String id = ctx.statement().reg_assignment().var_iden().VAR_IDEN().getText();
+		//Value v = this.visit(ctx.statement().reg_assignment().expr());
 		return visitChildren(ctx);
 	}
 	
@@ -441,7 +529,42 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override 
 	public Value visitReg_assignment(Darth_CoderParser.Reg_assignmentContext ctx) { 
-		return visitChildren(ctx); 
+		/*String id = ctx.var_iden().VAR_IDEN().getText();
+		Value value = this.visit(ctx.expr());
+		
+		System.out.println(id);
+		
+		if(!memory.containsKey(new Variable(Variable.GC,id))) {
+			System.out.println("avril");
+		}
+		
+		if(value.isInt() && memory.containsKey(new Variable(Variable.GC,id))) {
+			memory.put(new Variable(Variable.GC, id), value);
+		}
+		else if(value.isDouble() && memory.containsKey(new Variable(Variable.IC,id))) {
+			memory.put(new Variable(Variable.IC, id), value);
+		}
+		else if(value.isChar() && memory.containsKey(new Variable(Variable.UN,id))) {
+			memory.put(new Variable(Variable.UN, id), value);
+		}
+		else if(value.isString() && memory.containsKey(new Variable(Variable.LE,id))) {
+			memory.put(new Variable(Variable.LE, id), value);
+		}
+		
+		return value;*/
+		
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		Value value = this.visit(ctx.expr());
+		
+		if(memory.containsKey(id)) {
+			memory.put(id, value);
+		}
+		else {
+			System.out.println("Undeclared variable");
+		}
+		
+		return value;
+		
 	}
 	
 	@Override 

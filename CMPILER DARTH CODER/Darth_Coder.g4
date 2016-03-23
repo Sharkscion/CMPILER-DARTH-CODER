@@ -470,8 +470,9 @@ constant_declaration
 //VARIABLE DECLARATIONS!
 	
 var_dec
-	: data_type statement TERMINAL
-	| SIDE boolean_statement TERMINAL
+	: data_type statement TERMINAL		#VarDecFourTypes
+	| data_type var_iden TERMINAL		#VarDecVarIdenFourTypes
+	| SIDE boolean_statement TERMINAL	#VarDecBoolean
 	;
 
 boolean_statement
@@ -485,8 +486,7 @@ boolean_assignment
 	;
 
 statement
-	: var_iden
-	| reg_assignment
+	: reg_assignment
 	| array_assignment
 	;
 	
