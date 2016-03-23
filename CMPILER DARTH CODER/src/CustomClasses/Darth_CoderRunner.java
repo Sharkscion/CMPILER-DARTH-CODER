@@ -23,7 +23,6 @@ public class Darth_CoderRunner {
         File inputFile = new File("src/input.txt");
         
 		try {
-			
 			FileInputStream fis = new FileInputStream(inputFile);
 		 	 
 	    	ANTLRInputStream input = new ANTLRInputStream(fis);

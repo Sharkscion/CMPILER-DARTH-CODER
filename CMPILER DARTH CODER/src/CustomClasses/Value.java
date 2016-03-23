@@ -25,6 +25,10 @@ public class Value {
         return value instanceof Double;
     }
     
+    public boolean isBoolean() {
+        return value instanceof Boolean;
+    }
+    
     public boolean isInt() {
         return value instanceof Integer;
     }
