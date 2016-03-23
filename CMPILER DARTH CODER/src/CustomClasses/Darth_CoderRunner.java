@@ -22,8 +22,6 @@ public class Darth_CoderRunner {
 		Charset charset = Charset.forName("US-ASCII");
         File inputFile = new File("src/input.txt");
         
-        String content = "";
-        
 		try {
 			
 			FileInputStream fis = new FileInputStream(inputFile);
