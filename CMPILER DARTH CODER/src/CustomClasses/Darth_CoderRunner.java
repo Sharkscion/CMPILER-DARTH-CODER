@@ -57,8 +57,8 @@ public class Darth_CoderRunner {
 					try{
 						ParseTreeWalker walker = new ParseTreeWalker(); 
 					    Darth_CoderBaseVisitorImpl visitor = new Darth_CoderBaseVisitorImpl();
-						//Value result = visitor.visit(tree);
-						//System.out.println("Result: " + result);
+//						Value result = visitor.visit(tree);
+//						System.out.println("Result: " + result);
 					    visitor.visit(tree);
 						
 					}catch(Exception e){

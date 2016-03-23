@@ -512,8 +512,8 @@ incr
 //EXPRESSIONS!
 
 expr
-	: expr op=(PLUS | MINUS) expr2			#AdditiveExpr
-	| expr2									#ToExpr2
+	: expr op=(PLUS|MINUS) expr2		#AdditiveExpr
+	| expr2								#ToExpr2
 	;
 
 expr2
@@ -522,8 +522,8 @@ expr2
 	;
 
 gen_var
-	: uni_op var					#UnaryExpr
-	| var							#ToVar
+	: op=(NOT|PLUS|MINUS) var			#UnaryExpr
+	| var							    #ToVar
 	;
 
 var
@@ -533,22 +533,22 @@ var
 	| var_iden
 	;
 
-add_sub
-	: PLUS
-	| MINUS
-	;
-
-mul_div
-	: MULT 
-	| DIV
-	| MOD
-	;
-
-uni_op
-	: NOT
-	| PLUS
-	| MINUS
-	;
+//add_sub
+//	: PLUS
+//	| MINUS
+//	;
+//
+//mul_div
+//	: MULT 
+//	| DIV
+//	| MOD
+//	;
+//
+//uni_op
+//	: NOT
+//	| PLUS
+//	| MINUS
+//	;
 
 //ARRAYS!
 

@@ -331,24 +331,6 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVar(Darth_CoderParser.VarContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#add_sub}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAdd_sub(Darth_CoderParser.Add_subContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#mul_div}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMul_div(Darth_CoderParser.Mul_divContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#uni_op}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitUni_op(Darth_CoderParser.Uni_opContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#array}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

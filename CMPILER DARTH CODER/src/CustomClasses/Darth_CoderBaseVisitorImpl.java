@@ -313,22 +313,57 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	public Value visitAdditiveExpr(Darth_CoderParser.AdditiveExprContext ctx) { 
 		Value left = this.visit(ctx.expr());
 		Value right = this.visit(ctx.expr2());
-	
+		
 		switch(ctx.op.getType()){
 			case Darth_CoderParser.PLUS:
-				 if(left.isDouble() && right.isDouble())
-					 new Value(left.asDouble() + right.asDouble());
-				 else
-					 new Value(left.asString() + right.asString());
+				 if(left.isDouble() && right.isDouble()){
+					 System.out.println("Line 320: HELLO DOUBLE");
+					 return new Value(left.asDouble() + right.asDouble());
+				 } 
+				else
+				{
+					System.out.println("Line 325: HELLO STRING");
+					 return new Value(left.asString() + right.asString());
+				}
 			case Darth_CoderParser.MINUS:
 				 new Value(left.asDouble() - right.asDouble());
 			default:
 				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
 			
 		}
-		
 	}
 	
+	@Override 
+	public Value visitMultiplicativeExpr(Darth_CoderParser.MultiplicativeExprContext ctx) { 
+		Value left = this.visit(ctx.expr2());
+		Value right = this.visit(ctx.gen_var());
+	
+		switch(ctx.op.getType()){
+			case Darth_CoderParser.MULT:
+				 return new Value(left.asDouble() * right.asDouble());
+			case Darth_CoderParser.DIV:
+				 return new Value(left.asDouble() / right.asDouble());
+			default:
+				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));	
+		}
+	}
+	
+	@Override 
+	public Value visitUnaryExpr(Darth_CoderParser.UnaryExprContext ctx) { 
+		Value operand = this.visit(ctx.var());
+		
+		switch(ctx.op.getType()){
+			case Darth_CoderParser.NOT:
+				 return new Value(!operand.asBoolean());
+			case Darth_CoderParser.PLUS:
+				return new Value(operand.asDouble());
+			case Darth_CoderParser.MINUS:
+				return new Value(-1*operand.asDouble());
+			default:
+				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));	
+		}
+	}
+
 //	@Override 
 //	public Value visitExpr(Darth_CoderParser.ExprContext ctx) { 
 //		return visitChildren(ctx); 
@@ -344,26 +379,26 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 //		return visitChildren(ctx); 
 //	}
 	
-	@Override 
-	public Value visitVar(Darth_CoderParser.VarContext ctx) { 
-		return visitChildren(ctx); 
-	}
+//	@Override 
+//	public Value visitVar(Darth_CoderParser.VarContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
 	
 //	@Override 
 //	public Value visitAdd_sub(Darth_CoderParser.Add_subContext ctx) { 
 //		return visitChildren(ctx); 
 //	}
-
-	@Override 
-	public Value visitMul_div(Darth_CoderParser.Mul_divContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitUni_op(Darth_CoderParser.Uni_opContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
+//
+//	@Override 
+//	public Value visitMul_div(Darth_CoderParser.Mul_divContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitUni_op(Darth_CoderParser.Uni_opContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
 	@Override 
 	public Value visitArray(Darth_CoderParser.ArrayContext ctx) { 
 		return visitChildren(ctx); 
