@@ -49,13 +49,13 @@ public class Darth_CoderLexer extends Lexer {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, null, null, "'\n'", null, "'+'", "'-'", "'*'", "'/'", "'%'", "'('", 
-		"')'", "'='", "'!'", "'''", "'\"'", "'++'", "'--'", null, null, null, 
-		null, null, "'.'", "'GalacticCredit'", "'ImperialCredit'", "'Unit'", "'Legion'", 
+		null, null, null, "'\n'", null, "'+'", "'-'", "'*'", "'/'", "'%'", null, 
+		null, "'='", "'!'", "'''", "'\"'", "'++'", "'--'", null, null, null, null, 
+		null, "'.'", "'GalacticCredit'", "'ImperialCredit'", "'Unit'", "'Legion'", 
 		"'Side'", "'LightSide'", "'DarkSide'", "'Declare'", "'Void'", "'ForceInstance'", 
 		"'InstanceVariant'", "'NoVariant'", "'ForceCommand'", "'ForceOrder'", 
 		"'ForceAnalyze'", "'Order_66'", "'Transmit'", null, null, "'{'", "'}'", 
-		"'['", "']'", "','", null, null, "'<='", "'>='", "'!='", "'=='", "'&&'", 
+		"'['", "']'", "','", "'<'", "'>'", "'<='", "'>='", "'!='", "'=='", "'&&'", 
 		"'||'", "'End_Transmission'", "'Initiate'", "'EncodeGalacticCredit'", 
 		"'EncodeImperialCredit'", "'EncodeUnit'", "'EncodeLegion'", "'Decode'"
 	};
@@ -259,8 +259,8 @@ public class Darth_CoderLexer extends Lexer {
 		"\u017f\7t\2\2\u017f\u0180\7a\2\2\u0180\u0181\78\2\2\u0181\u0182\78\2\2"+
 		"\u0182R\3\2\2\2\u0183\u0184\7V\2\2\u0184\u0185\7t\2\2\u0185\u0186\7c\2"+
 		"\2\u0186\u0187\7p\2\2\u0187\u0188\7u\2\2\u0188\u0189\7o\2\2\u0189\u018a"+
-		"\7k\2\2\u018a\u018b\7v\2\2\u018bT\3\2\2\2\u018c\u018d\7>\2\2\u018dV\3"+
-		"\2\2\2\u018e\u018f\7@\2\2\u018fX\3\2\2\2\u0190\u0191\7}\2\2\u0191Z\3\2"+
+		"\7k\2\2\u018a\u018b\7v\2\2\u018bT\3\2\2\2\u018c\u018d\7*\2\2\u018dV\3"+
+		"\2\2\2\u018e\u018f\7+\2\2\u018fX\3\2\2\2\u0190\u0191\7}\2\2\u0191Z\3\2"+
 		"\2\2\u0192\u0193\7\177\2\2\u0193\\\3\2\2\2\u0194\u0195\7]\2\2\u0195^\3"+
 		"\2\2\2\u0196\u0197\7_\2\2\u0197`\3\2\2\2\u0198\u0199\7.\2\2\u0199b\3\2"+
 		"\2\2\u019a\u019b\7>\2\2\u019bd\3\2\2\2\u019c\u019d\7@\2\2\u019df\3\2\2"+

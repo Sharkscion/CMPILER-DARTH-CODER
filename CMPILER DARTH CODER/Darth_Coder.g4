@@ -173,11 +173,11 @@ RETURN
 	;
 	
 ARRAY_OPEN
-	: '<'
+	: '('
 	;
 
 ARRAY_CLOSE
-	: '>'
+	: ')'
 	;
 
 OPEN_BRACES
