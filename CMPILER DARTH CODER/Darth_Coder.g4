@@ -355,17 +355,17 @@ else_conditional
 //CONDITIONALS!
 // allows 3 conditions :(
 condition
-	: condition logi_op2 condition2
+	: condition AND condition2
 	| condition2
 	;
 	
 condition2
-	: condition2 logi_op condition3
+	: condition2 OR condition3
 	| condition3
 	;
 	
 condition3
-	: condition3 equal_op condition4
+	: condition3 op=(NOT EQUAL|EQUAL) condition4
 	| condition4
 	;
 
@@ -376,7 +376,7 @@ condition4
 
 gen_comparison
 	: expr
-	| not OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET
+	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET
 	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET
 	| var_iden
 	;
