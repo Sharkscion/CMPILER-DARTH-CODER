@@ -88,7 +88,7 @@ CHARACTER_LITERAL
 	;
 
 COMMENT_LINE
-	: '*' STRING_CHARACTERS? '*'
+	: '*' ~[\r\n]*? '*'
 	;
 	
 fragment
@@ -97,17 +97,7 @@ SINGLE_CHARACTER
 	;
 
 STRING_LITERAL
-	:	'"' STRING_CHARACTERS? '"'
-	;
-	
-fragment
-STRING_CHARACTERS
-	:	STRING_CHARACTER+
-	;
-	
-fragment
-STRING_CHARACTER
-	:	~["\\]
+	:	'"' (~["\r\n] | '""')* '"'
 	;
 
 TERMINAL
@@ -321,7 +311,7 @@ scan_legion
 	;
 	
 print
-	: PRINT OPEN_SQUARE_BRACKET expr? CHARACTER_LITERAL? STRING_LITERAL? var_iden? func_call? CLOSE_SQUARE_BRACKET TERMINAL
+	: PRINT OPEN_SQUARE_BRACKET expr? CHARACTER_LITERAL? var_iden? func_call? CLOSE_SQUARE_BRACKET TERMINAL
 	;
 	
 //ITERATIVE CONSTRUCTS!
@@ -617,10 +607,10 @@ legion
 	;
 	
 literal
-	: string_literal		#StrngLiteral
-	| character_literal		#CharLiteral
-	| int_literal			#IntLiteral
-	| float_literal			#FloatLiteral
+	: string_literal		
+	| character_literal		
+	| int_literal			
+	| float_literal			
 	;
 	
 string_literal

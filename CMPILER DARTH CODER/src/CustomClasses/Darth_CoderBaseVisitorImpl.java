@@ -56,7 +56,19 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 
 	@Override 
 	public Value visitPrint(Darth_CoderParser.PrintContext ctx) { 
-		return visitChildren(ctx); 
+		// expr? CHARACTER_LITERAL? string_literal? var_iden? func_call?
+		
+		Value v = this.visit(ctx.expr());
+		
+		if(ctx.expr() != null) {
+			
+			System.out.println(v);
+		}
+		//System.out.println("----");
+		
+		//System.out.println(v);
+		
+		return v; 
 	}
 	
 	@Override 
@@ -333,42 +345,29 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	}
 	
 	@Override 
-	public Value visitStrngLiteral(Darth_CoderParser.StrngLiteralContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override
-	public Value visitCharLiteral(Darth_CoderParser.CharLiteralContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitIntLiteral(Darth_CoderParser.IntLiteralContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Value visitFloatLiteral(Darth_CoderParser.FloatLiteralContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
 	public Value visitString_literal(Darth_CoderParser.String_literalContext ctx) { 
-		return visitChildren(ctx); 
+		String str = ctx.getText();
+        // strip quotes
+        str = str.substring(1, str.length() - 1).replace("\"\"", "\"");
+        //System.out.println("String Literal: " + str);
+        return new Value(str);
 	}
 	
 	@Override 
 	public Value visitCharacter_literal(Darth_CoderParser.Character_literalContext ctx) { 
-		return visitChildren(ctx); 
+		String character = ctx.getText();
+		
+		Character c = character.substring(1, character.length() - 1).replace("\'\'", "\'").toCharArray()[0];
+		return new Value(Character.valueOf(c));
 	}
 	
 	@Override 
-	public Value visitInt_literal(Darth_CoderParser.Int_literalContext ctx) { 
-		return visitChildren(ctx); 
+	public Value visitInt_literal(Darth_CoderParser.Int_literalContext ctx) {
+		return new Value(Integer.valueOf(ctx.getText())); 
 	}
 	
 	@Override 
 	public Value visitFloat_literal(Darth_CoderParser.Float_literalContext ctx) { 
-		return visitChildren(ctx); 
+		return new Value(Double.valueOf(ctx.getText())); 
 	}
 }
