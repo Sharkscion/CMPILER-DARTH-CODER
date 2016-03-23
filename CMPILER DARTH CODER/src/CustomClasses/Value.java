@@ -24,6 +24,14 @@ public class Value {
     public boolean isDouble() {
         return value instanceof Double;
     }
+    
+    public Character asChar() {
+    	return (Character)value;
+    }
+    
+    public Integer asInt() {
+    	return (Integer) value;
+    }
 
     @Override
     public int hashCode() {

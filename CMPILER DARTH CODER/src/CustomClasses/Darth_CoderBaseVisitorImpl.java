@@ -1,7 +1,11 @@
 package CustomClasses;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+
+import org.antlr.v4.runtime.ANTLRInputStream;
 
 import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
 import ANTLRGeneratedClasses.Darth_CoderParser;
@@ -36,37 +40,91 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override 
 	public Value visitScan_imperial_credit(Darth_CoderParser.Scan_imperial_creditContext ctx) { 
-		return visitChildren(ctx); 
+		Value value = null;
+		
+		Scanner sc = new Scanner(System.in);
+		value = new Value (sc.nextFloat());
+		
+		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		
+		//System.out.println(value);
+		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		
+		return value; 
 	}
 
 	@Override 
 	public Value visitScan_galactic_credit(Darth_CoderParser.Scan_galactic_creditContext ctx) { 
-		return visitChildren(ctx); 
+		Value value = null;
+		
+		Scanner sc = new Scanner(System.in);
+		value = new Value (sc.nextInt());
+		
+		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		
+		//System.out.println(value);
+		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		
+		return value;
 	}
 
 	@Override 
 	public Value visitScan_unit(Darth_CoderParser.Scan_unitContext ctx) {
-		return visitChildren(ctx); 
+		Value value = null;
+		
+		Scanner sc = new Scanner(System.in);
+		value = new Value (sc.next());
+		
+		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		
+		//System.out.println(value);
+		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		
+		return value;
 	}
 	
 	@Override 
 	public Value visitScan_legion(Darth_CoderParser.Scan_legionContext ctx) { 
-		return visitChildren(ctx); 
+		Value value = null;
+		
+		Scanner sc = new Scanner(System.in);
+		value = new Value (sc.nextLine());
+		
+		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		
+		//System.out.println(value);
+		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		
+		return value;
 	}
 
 	@Override 
 	public Value visitPrint(Darth_CoderParser.PrintContext ctx) { 
 		// expr? CHARACTER_LITERAL? string_literal? var_iden? func_call?
 		
-		Value v = this.visit(ctx.expr());
+		Value v = null;
 		
 		if(ctx.expr() != null) {
+			v = this.visit(ctx.expr());
 			
-			System.out.println(v);
+			System.out.println("Printing expr: " + v);
 		}
-		//System.out.println("----");
+		else if(ctx.var_iden() != null) {
+			v = this.visit(ctx.var_iden());
+			
+			System.out.println("Var_iden: " + ctx.var_iden().VAR_IDEN().getText());
+			
+			if(memory.containsKey(ctx.var_iden().VAR_IDEN().getText())) {
+				System.out.println("Var_iden value: " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+			}
+			else {
+				System.out.println("variable has not been declared.");
+			}
+			
+			
+		}
 		
-		//System.out.println(v);
+		
 		
 		return v; 
 	}
@@ -241,7 +299,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override 
 	public Value visitVar_iden(Darth_CoderParser.Var_idenContext ctx) { 
-		return visitChildren(ctx); 
+		return new Value(ctx.VAR_IDEN().getText()); 
 	}
 	
 	@Override 
