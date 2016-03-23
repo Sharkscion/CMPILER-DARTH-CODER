@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.management.RuntimeOperationsException;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 
 import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
@@ -308,29 +310,49 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	}
 	
 	@Override 
-	public Value visitExpr(Darth_CoderParser.ExprContext ctx) { 
-		return visitChildren(ctx); 
+	public Value visitAdditiveExpr(Darth_CoderParser.AdditiveExprContext ctx) { 
+		Value left = this.visit(ctx.expr());
+		Value right = this.visit(ctx.expr2());
+	
+		switch(ctx.op.getType()){
+			case Darth_CoderParser.PLUS:
+				 if(left.isDouble() && right.isDouble())
+					 new Value(left.asDouble() + right.asDouble());
+				 else
+					 new Value(left.asString() + right.asString());
+			case Darth_CoderParser.MINUS:
+				 new Value(left.asDouble() - right.asDouble());
+			default:
+				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+			
+		}
+		
 	}
 	
-	@Override 
-	public Value visitExpr2(Darth_CoderParser.Expr2Context ctx) { 
-		return visitChildren(ctx); 
-	}
+//	@Override 
+//	public Value visitExpr(Darth_CoderParser.ExprContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
+//	
+//	@Override 
+//	public Value visitExpr2(Darth_CoderParser.Expr2Context ctx) { 
+//		return visitChildren(ctx); 
+//	}
 	
-	@Override 
-	public Value visitGen_var(Darth_CoderParser.Gen_varContext ctx) { 
-		return visitChildren(ctx); 
-	}
+//	@Override 
+//	public Value visitGen_var(Darth_CoderParser.Gen_varContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
 	
 	@Override 
 	public Value visitVar(Darth_CoderParser.VarContext ctx) { 
 		return visitChildren(ctx); 
 	}
 	
-	@Override 
-	public Value visitAdd_sub(Darth_CoderParser.Add_subContext ctx) { 
-		return visitChildren(ctx); 
-	}
+//	@Override 
+//	public Value visitAdd_sub(Darth_CoderParser.Add_subContext ctx) { 
+//		return visitChildren(ctx); 
+//	}
 
 	@Override 
 	public Value visitMul_div(Darth_CoderParser.Mul_divContext ctx) { 

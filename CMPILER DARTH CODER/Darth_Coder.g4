@@ -512,18 +512,18 @@ incr
 //EXPRESSIONS!
 
 expr
-	: expr add_sub expr2
-	| expr2
+	: expr op=(PLUS | MINUS) expr2			#AdditiveExpr
+	| expr2									#ToExpr2
 	;
 
 expr2
-	: expr2 mul_div gen_var 
-	| gen_var
+	: expr2 op=(MULT|DIV) gen_var 		#MultiplicativeExpr
+	| gen_var							#ToGenVar
 	;
 
 gen_var
-	: uni_op var
-	| var
+	: uni_op var					#UnaryExpr
+	| var							#ToVar
 	;
 
 var

@@ -283,23 +283,47 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIncr(Darth_CoderParser.IncrContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#expr}.
+	 * Visit a parse tree produced by the {@code AdditiveExpr}
+	 * labeled alternative in {@link Darth_CoderParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpr(Darth_CoderParser.ExprContext ctx);
+	T visitAdditiveExpr(Darth_CoderParser.AdditiveExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#expr2}.
+	 * Visit a parse tree produced by the {@code ToExpr2}
+	 * labeled alternative in {@link Darth_CoderParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpr2(Darth_CoderParser.Expr2Context ctx);
+	T visitToExpr2(Darth_CoderParser.ToExpr2Context ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#gen_var}.
+	 * Visit a parse tree produced by the {@code MultiplicativeExpr}
+	 * labeled alternative in {@link Darth_CoderParser#expr2}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitGen_var(Darth_CoderParser.Gen_varContext ctx);
+	T visitMultiplicativeExpr(Darth_CoderParser.MultiplicativeExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToGenVar}
+	 * labeled alternative in {@link Darth_CoderParser#expr2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToGenVar(Darth_CoderParser.ToGenVarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code UnaryExpr}
+	 * labeled alternative in {@link Darth_CoderParser#gen_var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExpr(Darth_CoderParser.UnaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToVar}
+	 * labeled alternative in {@link Darth_CoderParser#gen_var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToVar(Darth_CoderParser.ToVarContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#var}.
 	 * @param ctx the parse tree
@@ -399,33 +423,11 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLegion(Darth_CoderParser.LegionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code StrngLiteral}
-	 * labeled alternative in {@link Darth_CoderParser#literal}.
+	 * Visit a parse tree produced by {@link Darth_CoderParser#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStrngLiteral(Darth_CoderParser.StrngLiteralContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code CharLiteral}
-	 * labeled alternative in {@link Darth_CoderParser#literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCharLiteral(Darth_CoderParser.CharLiteralContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IntLiteral}
-	 * labeled alternative in {@link Darth_CoderParser#literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIntLiteral(Darth_CoderParser.IntLiteralContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FloatLiteral}
-	 * labeled alternative in {@link Darth_CoderParser#literal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFloatLiteral(Darth_CoderParser.FloatLiteralContext ctx);
+	T visitLiteral(Darth_CoderParser.LiteralContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#string_literal}.
 	 * @param ctx the parse tree
