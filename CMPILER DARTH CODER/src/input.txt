@@ -1,4 +1,12 @@
 Initiate{
- 	ForceInstance[-3>4]
- 		Decode[-6/4.0 > 8.8/4].
+ 	ForceInstance[0 != 4]{
+ 		Decode[1/1.0].
+ 	}
+ 	
+ 	Decode["End"].
+ 	ForceInstance[0 == 4]{
+ 		Decode[1/1.0].
+ 	}InstanceVariant[4==4]{
+ 		Decode["sa loob ni else if"].
+ 	}
  }

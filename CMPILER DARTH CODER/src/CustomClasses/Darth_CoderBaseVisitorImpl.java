@@ -204,14 +204,40 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Value left = this.visit(ctx.condition3());
 		Value right = this.visit(ctx.condition4());
 		
-		switch(ctx.op.getType()){
-			case Darth_CoderParser.NOT_EQUAL:
-				return new Value(left.asBoolean() != right.asBoolean());
-			case Darth_CoderParser.EQUAL_EQUAL:
-				return new Value(left.asBoolean() == right.asBoolean());
-			default:
-				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
-
+		
+		if(left.isBoolean() && right.isBoolean()){
+			switch(ctx.op.getType()){
+				case Darth_CoderParser.NOT_EQUAL:				
+					return new Value(left.asBoolean() != right.asBoolean());
+				case Darth_CoderParser.EQUAL_EQUAL:
+					return new Value(left.asBoolean() == right.asBoolean());
+				default:
+					 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+			}
+		}else{
+			
+			 if(left.isDouble() || right.isDouble()){
+				double dLeft = Double.parseDouble(left.toString());
+				double dRight = Double.parseDouble(right.toString());
+				switch(ctx.op.getType()){
+					case Darth_CoderParser.NOT_EQUAL:				
+						return new Value(dLeft != dRight);
+					case Darth_CoderParser.EQUAL_EQUAL:
+						return new Value(dLeft == dRight);
+					default:
+						 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+				}
+			 } 
+			 else{
+				 switch(ctx.op.getType()){
+					case Darth_CoderParser.NOT_EQUAL:				
+						return new Value(left.asInt() != right.asInt());
+					case Darth_CoderParser.EQUAL_EQUAL:
+						return new Value(left.asInt() == right.asInt());
+					default:
+						 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+				}
+			 }	
 		}
 	}
 
@@ -225,6 +251,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		 
 		switch(ctx.op.getType()){
 			case Darth_CoderParser.LESS_THAN:
+				
 				 if(left.isDouble() || right.isDouble()){
 					 return new Value(dLeft < dRight);
 				 } 
