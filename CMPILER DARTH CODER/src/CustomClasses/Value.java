@@ -37,6 +37,10 @@ public class Value {
         return value instanceof String;
     }
     
+    public boolean isChar() {
+    	return value instanceof Character;
+    }
+    
     public Character asChar() {
     	return (Character)value;
     }
