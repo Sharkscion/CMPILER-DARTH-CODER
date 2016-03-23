@@ -23,8 +23,10 @@ public class Darth_CoderRunner {
         File inputFile = new File("src/input.txt");
         
 		try {
+			
 			FileInputStream fis = new FileInputStream(inputFile);
 		 	 
+			
 	    	ANTLRInputStream input = new ANTLRInputStream(fis);
 	    	
 	    	LexerErrorListener lexerErrorListener = new LexerErrorListener();
@@ -44,12 +46,12 @@ public class Darth_CoderRunner {
 			ParseTree tree = parser.start();
 			
 			if(lexerErrorListener.hasErrors()){
-				System.out.println("@LEXICAL ERROR: ");
-				System.out.println(lexerErrorListener);
+				System.err.println("@LEXICAL ERROR: ");
+				System.err.println(lexerErrorListener);
 			}else{
 				if(parserErrorListener.hasErrors()){
-					System.out.println("@PARSER ERROR: ");
-					System.out.println(parserErrorListener);
+					System.err.println("@PARSER ERROR: ");
+					System.err.println(parserErrorListener);
 				}
 				
 				if(!lexerErrorListener.hasErrors() && !parserErrorListener.hasErrors()){
@@ -62,7 +64,7 @@ public class Darth_CoderRunner {
 						
 					}catch(Exception e){
 						if(e instanceof ArithmeticException){
-							System.out.println("PARSER ERROR: "+e.getMessage());
+							System.err.println("PARSER ERROR: "+e.getMessage());
 						}							
 					}
 				}

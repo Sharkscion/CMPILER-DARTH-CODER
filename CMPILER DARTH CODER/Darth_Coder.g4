@@ -379,6 +379,8 @@ gen_comparison
 	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET	#NotBracketCond
 	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET		#BracketCond
 	| var_iden													#ToVarIden
+	| LIGHT_SIDE												#True
+	| DARK_SIDE													#False
 	;
 
 rel_op
@@ -476,7 +478,7 @@ var_dec
 	;
 
 boolean_statement
-	: var_iden
+	: var_iden							
 	| boolean_assignment
 	;	
 	
@@ -518,19 +520,19 @@ expr
 
 expr2
 	: expr2 op=(MULT|DIV|MOD) gen_var 		#MultiplicativeExpr
-	| gen_var							#ToGenVar
+	| gen_var								#ToGenVar
 	;
 
 gen_var
 	: op=(NOT|PLUS|MINUS) var			#UnaryExpr
 	| var							    #ToVar
 	;
-
+//kasama pa ba dito yung -(expr) ?
 var
-	: literal
-	| func_call
-	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 
-	| var_iden
+	: literal											#ToLiteral
+	| func_call											#ToFunc_call
+	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	#GroupExpr
+	| var_iden											#ToVar_Iden
 	;
 
 //add_sub

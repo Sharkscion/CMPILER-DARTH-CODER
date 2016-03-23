@@ -181,6 +181,20 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitToVarIden(Darth_CoderParser.ToVarIdenContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code True}
+	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrue(Darth_CoderParser.TrueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code False}
+	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFalse(Darth_CoderParser.FalseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#rel_op}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -394,11 +408,33 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitToVar(Darth_CoderParser.ToVarContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#var}.
+	 * Visit a parse tree produced by the {@code ToLiteral}
+	 * labeled alternative in {@link Darth_CoderParser#var}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar(Darth_CoderParser.VarContext ctx);
+	T visitToLiteral(Darth_CoderParser.ToLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToFunc_call}
+	 * labeled alternative in {@link Darth_CoderParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToFunc_call(Darth_CoderParser.ToFunc_callContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code GroupExpr}
+	 * labeled alternative in {@link Darth_CoderParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGroupExpr(Darth_CoderParser.GroupExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToVar_Iden}
+	 * labeled alternative in {@link Darth_CoderParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToVar_Iden(Darth_CoderParser.ToVar_IdenContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#array}.
 	 * @param ctx the parse tree

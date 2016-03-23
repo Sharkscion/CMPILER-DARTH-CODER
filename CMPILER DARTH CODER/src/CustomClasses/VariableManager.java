@@ -55,6 +55,9 @@ public class VariableManager {
 		
 	}
 	
+	public Value getVariableValue(String id){
+		return memory.get(id);
+	}
 	public boolean isVariableExists(String id){
 		
 		if(getVariable(id) == null){
