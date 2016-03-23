@@ -3,6 +3,7 @@ Initiate{
   EncodeGalacticCredit[_number]. 
   Legion _res <_number>. 
   GalacticCredit _i. 
+  *Hello!*
   ForceCommand[_i = 0. _i < _number. _i++.] { 
   	Decode["Enter hour in military format: "]. 
   	GalacticCredit _hour. 
