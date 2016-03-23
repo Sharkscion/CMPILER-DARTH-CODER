@@ -495,7 +495,7 @@ array_assignment
 	;
 
 reg_assignment
-	: var_iden EQUAL expr
+	: var_iden EQUAL expr	
 	;
 	
 var_iden

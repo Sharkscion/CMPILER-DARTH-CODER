@@ -6,6 +6,8 @@ public class Variable {
 	public static final String GC = "GalacticCredit";
 	public static final String UN = "Unit";
 	public static final String LE = "Legion";
+	public static final String SIDE = "Side";
+	public static final String VOID = "Void";
 	
 	private String type;
 	private String variableName;

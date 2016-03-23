@@ -1,14 +1,39 @@
 package CustomClasses;
 
+import ANTLRGeneratedClasses.Darth_CoderParser.ElseIf_conditionalContext;
+
 public class Value {
 	public static Value VOID = new Value(new Object());
 
     final Object value;
+    private String type;
     
     public Value(Object value) {
         this.value = value;
+        setType();
     }
 
+    public void setType(){
+    	
+    	if(isDouble())
+    		this.type = Variable.IC;
+    	else if(isInt())
+    		this.type = Variable.GC;
+    	else if (isChar())
+    		this.type = Variable.UN;
+    	else if (isString())
+    		this.type = Variable.LE;
+    	else if (isBoolean())
+    		this.type = Variable.SIDE;
+    	else
+    		this.type = Variable.VOID;
+    		
+    }
+    
+    public String getType(){
+    	return type;
+    }
+    
     public Boolean asBoolean() {
         return (Boolean)value;
     }

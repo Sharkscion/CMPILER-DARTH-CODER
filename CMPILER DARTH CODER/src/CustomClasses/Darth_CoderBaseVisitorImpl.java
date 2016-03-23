@@ -1,26 +1,18 @@
 package CustomClasses;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
-import javax.management.RuntimeOperationsException;
-
-import org.antlr.v4.runtime.ANTLRInputStream;
 
 import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
 import ANTLRGeneratedClasses.Darth_CoderParser;
-import ANTLRGeneratedClasses.Darth_CoderParser.ConditionContext;
 
 public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
-	 // used to compare floating point numbers
+	// used to compare floating point numbers
     public static final double SMALL_VALUE = 0.00000000001;
-
-    // store variables (there's only one global scope!)
-    private Map<String, Value> memory = new HashMap<String, Value>();
+    // used to manage variables and their values
+    private VariableManager varManager = new VariableManager();
+    
+    // used to denote which conditional statements where evaluated (for if else)
     private Boolean isEvaluated;
 	
 	@Override 
@@ -50,10 +42,10 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Scanner sc = new Scanner(System.in);
 		value = new Value (sc.nextFloat());
 		
-		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		//memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
 		
 		//System.out.println(value);
-		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		//System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
 		
 		return value; 
 	}
@@ -65,10 +57,10 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Scanner sc = new Scanner(System.in);
 		value = new Value (sc.nextInt());
 		
-		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		//memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
 		
 		//System.out.println(value);
-		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		//System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
 		
 		return value;
 	}
@@ -80,10 +72,10 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Scanner sc = new Scanner(System.in);
 		value = new Value (sc.next());
 		
-		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		//memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
 		
 		//System.out.println(value);
-		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		//System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
 		
 		return value;
 	}
@@ -95,10 +87,10 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Scanner sc = new Scanner(System.in);
 		value = new Value (sc.nextLine());
 		
-		memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
+		//memory.put(ctx.var_iden().VAR_IDEN().getText(), value);
 		
 		//System.out.println(value);
-		System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+		//System.out.println(ctx.var_iden().VAR_IDEN().getText() + ": " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
 		
 		return value;
 	}
@@ -119,12 +111,12 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 			
 			System.out.println("Var_iden: " + ctx.var_iden().VAR_IDEN().getText());
 			
-			if(memory.containsKey(ctx.var_iden().VAR_IDEN().getText())) {
-				System.out.println("Var_iden value: " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
-			}
-			else {
-				System.out.println("variable has not been declared.");
-			}
+//			if(memory.containsKey(ctx.var_iden().VAR_IDEN().getText())) {
+//				System.out.println("Var_iden value: " + memory.get(ctx.var_iden().VAR_IDEN().getText()));
+//			}
+//			else {
+//				System.out.println("variable has not been declared.");
+//			}
 			
 			
 		}
@@ -297,98 +289,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		return new Value(v.asBoolean()); 
 	}
 
-
-	
-//	@Override 
-//	public Value visitCondition(Darth_CoderParser.ConditionContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitCondition2(Darth_CoderParser.Condition2Context ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//
-//	@Override 
-//	public Value visitCondition3(Darth_CoderParser.Condition3Context ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override public Value visitCondition4(Darth_CoderParser.Condition4Context ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitGen_comparison(Darth_CoderParser.Gen_comparisonContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-	
-//	@Override 
-//	public Value visitRel_op(Darth_CoderParser.Rel_opContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitEqual_op(Darth_CoderParser.Equal_opContext ctx) { 
-//		return visitChildren(ctx);
-//	}
-//	
-//	@Override 
-//	public Value visitLogi_op(Darth_CoderParser.Logi_opContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitLogi_op2(Darth_CoderParser.Logi_op2Context ctx) { 
-//		return visitChildren(ctx); 
-//	}
-	
-//	
-//	@Override 
-//	public Value visitOr(Darth_CoderParser.OrContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override
-//	public Value visitAnd(Darth_CoderParser.AndContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitNot_equal(Darth_CoderParser.Not_equalContext ctx) {
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitEqual_equal(Darth_CoderParser.Equal_equalContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitLess_than(Darth_CoderParser.Less_thanContext ctx) { 
-//		
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override public Value visitGreater_than(Darth_CoderParser.Greater_thanContext ctx) {
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitGreater_than_or_equal_to(Darth_CoderParser.Greater_than_or_equal_toContext ctx) { 
-//		return visitChildren(ctx); 
-//	}
-//	
-//	@Override 
-//	public Value visitLess_than_or_equal_to(Darth_CoderParser.Less_than_or_equal_toContext ctx) { 
-//		return visitChildren(ctx);
-//	}
-//	
-//	@Override 
-//	public Value visitNot(Darth_CoderParser.NotContext ctx) { 
-//		return visitChildren(ctx);
-//	}
-//	
 	@Override 
 	public Value visitFunc_dec(Darth_CoderParser.Func_decContext ctx) {
 		return visitChildren(ctx); 
@@ -419,43 +319,46 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		
 		String id = ctx.statement().reg_assignment().var_iden().VAR_IDEN().getText();
 		Value v = this.visit(ctx.statement().reg_assignment().expr());
+	
 		boolean flag = false;
 		
 		if(ctx.data_type().imperial_credit() != null) {
-			//System.out.println("Imperial Credit");
+			Variable var = new Variable(Variable.IC,id);
+			varManager.addVariable(var);
 			
 			if(v.isDouble()) {
-				//System.out.println("Legit Double");
-				memory.put(id, v);
+				varManager.addVariableValue(var.getVariableName(), v);
 				flag = true;
 			}
 		}
-		else if (ctx.data_type().galactic_credit() != null) {
-			//System.out.println("Galactic Credit");
-			
-			if(v.isInt()) {
-				//System.out.println("Legit Int");
-				memory.put(id, v);
-				flag = true;
-			}
-		}
-		else if (ctx.data_type().unit() != null) {
-			if(v.isChar()) {
-				//System.out.println("Legit Char");
-				memory.put(id, v);
-				flag = true;
-			}
-		}
-		else if (ctx.data_type().legion() != null) {
-			if(v.isString()) {
-				//System.out.println("Legit String");
-				memory.put(id, v);
-				flag = true;
-			}
-		}
+//		else if (ctx.data_type().galactic_credit() != null) {
+//			//System.out.println("Galactic Credit");
+//			
+//			if(v.isInt()) {
+//				//System.out.println("Legit Int");
+//				memory.put(id, v);
+//				flag = true;
+//			}
+//		}
+//		else if (ctx.data_type().unit() != null) {
+//			if(v.isChar()) {
+//				//System.out.println("Legit Char");
+//				memory.put(id, v);
+//				flag = true;
+//			}
+//		}
+//		else if (ctx.data_type().legion() != null) {
+//			if(v.isString()) {
+//				//System.out.println("Legit String");
+//				memory.put(id, v);
+//				flag = true;
+//			}
+//		}
 		
-		if(!flag) {
-			System.out.println("DataType Mismatch");
+		if(!varManager.isDataTypeMatch(id, v)) {	
+			String varType = varManager.getVariable(id).getType();
+			String valType = v.getType();
+			System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
 		}
 		
 		/*String id = ctx.var_iden().VAR_IDEN().getText();
@@ -471,6 +374,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override public Value visitVarDecVarIdenFourTypes(Darth_CoderParser.VarDecVarIdenFourTypesContext ctx) { 
 		
+	
 		/*String datatype = ctx.data_type().getText();
 		String id = ctx.var_iden().VAR_IDEN().getText();
 		
@@ -555,14 +459,19 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		
 		String id = ctx.var_iden().VAR_IDEN().getText();
 		Value value = this.visit(ctx.expr());
-		
-		if(memory.containsKey(id)) {
-			memory.put(id, value);
+	
+		if(varManager.isVariableExists(id)){
+			if(varManager.isDataTypeMatch(id, value)){
+				varManager.editVariableValue(id, value);
+			}else{
+				String varType = varManager.getVariable(id).getType();
+				String valType = value.getType();
+				System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+value + " is "+valType);
+			}
+		}else{
+			System.err.println("UNDECLARED VARIABLE: "+ id);
 		}
-		else {
-			System.out.println("Undeclared variable");
-		}
-		
+
 		return value;
 		
 	}
