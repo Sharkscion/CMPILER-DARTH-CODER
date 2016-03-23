@@ -314,19 +314,27 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Value left = this.visit(ctx.expr());
 		Value right = this.visit(ctx.expr2());
 		
+		System.out.println("Left: " + left);
+		System.out.println("Right: " + right);
+		//System.out.println(left.asInt() - right.asInt());
+
 		switch(ctx.op.getType()){
 			case Darth_CoderParser.PLUS:
 				 if(left.isDouble() && right.isDouble()){
-					 System.out.println("Line 320: HELLO DOUBLE");
+					 System.out.println("Line 324: HELLO DOUBLE");
 					 return new Value(left.asDouble() + right.asDouble());
-				 } 
+				 }
+				 else if(left.isInt() && right.isInt()) {
+					 System.out.println("Line 328: HELLO INT");
+					 return new Value(left.asInt() + right.asInt());
+				 }
 				else
 				{
-					System.out.println("Line 325: HELLO STRING");
-					 return new Value(left.asString() + right.asString());
+					System.out.println("Line 333: HELLO ELSE");
+					 return new Value(left.asDouble() + Double.valueOf(right.asDouble()));
 				}
 			case Darth_CoderParser.MINUS:
-				 new Value(left.asDouble() - right.asDouble());
+				 return new Value(left.asDouble() - right.asDouble());
 			default:
 				 throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
 			
