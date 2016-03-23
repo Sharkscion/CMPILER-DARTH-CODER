@@ -1,4 +1,15 @@
-Initiate { ForceAnalyze[] {}  }
-Initiate { ForceOrder{ImperialCredit _credit = 32. }ForceAnalyze[_hi <= 1].  }
-Initiate { _hi++. }
-Initiate { EncodeGalacticCredit ["a"]. }
+Initiate{
+  GalacticCredit _number. 
+  EncodeGalacticCredit[_number]. 
+  Legion _res <_number>. 
+  GalacticCredit _i. 
+  ForceCommand[_i = 0. _i < _number. _i++.] { 
+  	Decode["Enter hour in military format: "]. 
+  	GalacticCredit _hour. 
+  	EncodeGalacticCredit[_hour]. 
+  	Decode["Enter minute in military format: "]. 
+  	GalacticCredit _minute. 
+  	EncodeGalacticCredit[_minute]. 
+  	Legion _result = #convertToStringFormat[_hour, _minute]. _res<_number - _i - 1> = _result. 
+  } 
+ }

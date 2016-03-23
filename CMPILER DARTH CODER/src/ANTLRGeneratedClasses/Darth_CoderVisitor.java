@@ -31,6 +31,12 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEpsilon(Darth_CoderParser.EpsilonContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link Darth_CoderParser#comment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComment(Darth_CoderParser.CommentContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#scan_imperial_credit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -319,19 +325,11 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUni_op(Darth_CoderParser.Uni_opContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Array1}
-	 * labeled alternative in {@link Darth_CoderParser#array}.
+	 * Visit a parse tree produced by {@link Darth_CoderParser#array}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArray1(Darth_CoderParser.Array1Context ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Array2}
-	 * labeled alternative in {@link Darth_CoderParser#array}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArray2(Darth_CoderParser.Array2Context ctx);
+	T visitArray(Darth_CoderParser.ArrayContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#array_open}.
 	 * @param ctx the parse tree

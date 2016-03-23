@@ -1,20 +1,15 @@
 package CustomClasses;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 
-import org.antlr.v4.misc.Utils.Filter;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import ANTLRGeneratedClasses.CalculatorLexer;
-import ANTLRGeneratedClasses.CalculatorParser;
 import ANTLRGeneratedClasses.Darth_CoderLexer;
 import ANTLRGeneratedClasses.Darth_CoderParser;
 
@@ -24,16 +19,15 @@ public class Darth_CoderRunner {
 	
 	public static void main(String[] args) throws Exception {
 		
-		//ArrayList<FileInput> inputList = new ArrayList <FileInput>();
 		Charset charset = Charset.forName("US-ASCII");
         File inputFile = new File("src/input.txt");
-        FileInputStream fis = null;
-        		
+        
+        String content = "";
+        
 		try {
-			fis = new FileInputStream(inputFile);
 			
-		    String line = null;
-		    
+			FileInputStream fis = new FileInputStream(inputFile);
+		 	 
 	    	ANTLRInputStream input = new ANTLRInputStream(fis);
 	    	
 	    	LexerErrorListener lexerErrorListener = new LexerErrorListener();
@@ -65,7 +59,7 @@ public class Darth_CoderRunner {
 					try{
 						ParseTreeWalker walker = new ParseTreeWalker(); 
 					    Darth_CoderBaseVisitorImpl visitor = new Darth_CoderBaseVisitorImpl();
-						int result = visitor.visit(tree);
+						Value result = visitor.visit(tree);
 						System.out.println("Result: " + result);
 						
 					}catch(Exception e){
@@ -75,10 +69,11 @@ public class Darth_CoderRunner {
 					}
 				}
 			}
-			System.out.println(tree.toStringTree(parser));			 
-		    
-		} catch (IOException x) {
-		    System.err.format("IOException: %s%n", x);
-		}
+			System.out.println(tree.toStringTree(parser));			
+	    
+	    
+	} catch (IOException x) {
+	    System.err.format("IOException: %s%n", x);
+	}
 	}
 }

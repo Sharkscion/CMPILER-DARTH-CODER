@@ -87,6 +87,10 @@ CHARACTER_LITERAL
 	:	'\'' SINGLE_CHARACTER '\''
 	;
 
+COMMENT_LINE
+	: '*' STRING_CHARACTERS? '*'
+	;
+	
 fragment
 SINGLE_CHARACTER
 	:	~['\\]
@@ -94,10 +98,6 @@ SINGLE_CHARACTER
 
 STRING_LITERAL
 	:	'"' STRING_CHARACTERS? '"'
-	;
-	
-COMMENT_LINE
-	: '*' STRING_CHARACTERS? '*'
 	;
 	
 fragment
@@ -296,7 +296,7 @@ code_block
 epsilon
 	:
 	;
-	
+
 comment
 	: COMMENT_LINE
 	;
