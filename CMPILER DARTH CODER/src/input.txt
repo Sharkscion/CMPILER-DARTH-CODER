@@ -1,3 +1,7 @@
-ImperialCredit #func1 [Unit _unitVar] { ImperialCredit _number = 4.  ForceAnalyze [_number > 1]{ _number = _number - 1. EncodeUnit[_unitVar].}}  Legion #legionFunc[]{} Initiate {}
-Legion #convertToStringFormat[GalacticCredit _hours, GalacticCredit _minutes] { Legion _res = "". Legion _end = "am". ForceInstance[_hours > 12 && _hours != 0] { _hours = _hours - 12. _end = "pm". } InstanceVariant[_hours == 0] { _hours = 12. } Legion _hourString = "" + _hours. Legion _minString = "" + _minutes. ForceInstance[_hours < 10] { _hourString = "0" + _hourString. } ForceInstance[_minutes < 10] { _minString = "0" + _minString. } Transmit _hourString + ":" + _minString + _res. } Initiate{}
-Initiate{ GalacticCredit _number. EncodeGalacticCredit[_number]. Legion _res <_number>. GalacticCredit _i. ForceCommand[_i = 0. _i < _number. _i++.] { Decode["Enter hour in military format: "]. GalacticCredit _hour. EncodeGalacticCredit[_hour]. Decode["Enter minute in military format: "]. GalacticCredit _minute. EncodeGalacticCredit[_minute]. Legion _result = #convertToStringFormat[_hour, _minute]. _res<_number - _i - 1> = _result. } }
+Initiate{
+ ImperialCredit _gio = 1.
+  _gio = _gio + 1. 
+  EncodeImperialCredit[_gio]. 
+  *comment*
+  Decode["Hi \n mmhmm"]. 
+}

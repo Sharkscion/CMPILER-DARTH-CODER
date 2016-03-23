@@ -20,7 +20,7 @@ NL
 	;
 	
 WS			
-	: [ \t\r]+	-> skip
+	: [ \t\r\n]+	-> skip
 	;
 
 PLUS		
@@ -94,6 +94,10 @@ SINGLE_CHARACTER
 
 STRING_LITERAL
 	:	'"' STRING_CHARACTERS? '"'
+	;
+	
+COMMENT_LINE
+	: '*' STRING_CHARACTERS? '*'
 	;
 	
 fragment
@@ -285,11 +289,16 @@ code_block
 	| scan_unit code_block
 	| scan_legion code_block
 	| print code_block
+	| comment code_block
 	| epsilon
 	;
 
 epsilon
 	:
+	;
+	
+comment
+	: COMMENT_LINE
 	;
 
 	
@@ -312,7 +321,7 @@ scan_legion
 	;
 	
 print
-	: PRINT OPEN_SQUARE_BRACKET expr? CHARACTER_LITERAL? STRING_LITERAL? CLOSE_SQUARE_BRACKET TERMINAL
+	: PRINT OPEN_SQUARE_BRACKET expr? CHARACTER_LITERAL? STRING_LITERAL? var_iden? func_call? CLOSE_SQUARE_BRACKET TERMINAL
 	;
 	
 //ITERATIVE CONSTRUCTS!
