@@ -30,8 +30,9 @@ public class Darth_CoderRunner {
         
 		try {
 			
+			Boolean[] bool = {true,true,true,true,true};
+			
 			FileInputStream fis = new FileInputStream(inputFile);
-		 	 
 			
 	    	ANTLRInputStream input = new ANTLRInputStream(fis);
 	    	
@@ -81,15 +82,15 @@ public class Darth_CoderRunner {
 		
 			
 			 //show AST in GUI
-//	        JFrame frame = new JFrame("Antlr AST");
-//	        TreeViewer viewr = new TreeViewer(Arrays.asList(
-//	                parser.getRuleNames()),tree);
-//	        viewr.setScale(1);//scale a little
-//	        JScrollPane scrollpane = new JScrollPane(viewr);
-//	        frame.add(scrollpane);
-//	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//	        frame.setSize(200,200);
-//	        frame.setVisible(true);
+	        JFrame frame = new JFrame("Antlr AST");
+	        TreeViewer viewr = new TreeViewer(Arrays.asList(
+	                parser.getRuleNames()),tree);
+	        viewr.setScale(1);//scale a little
+	        JScrollPane scrollpane = new JScrollPane(viewr);
+	        frame.add(scrollpane);
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        frame.setSize(200,200);
+	        frame.setVisible(true);
 	        
 			System.out.println(tree.toStringTree(parser));			
 	    

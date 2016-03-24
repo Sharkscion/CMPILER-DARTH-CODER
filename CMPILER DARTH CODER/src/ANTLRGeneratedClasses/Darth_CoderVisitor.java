@@ -225,6 +225,13 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarDecFourTypes(Darth_CoderParser.VarDecFourTypesContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ArrayDec}
+	 * labeled alternative in {@link Darth_CoderParser#var_dec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDec(Darth_CoderParser.ArrayDecContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code VarDecVarIdenFourTypes}
 	 * labeled alternative in {@link Darth_CoderParser#var_dec}.
 	 * @param ctx the parse tree
@@ -256,6 +263,12 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStatement(Darth_CoderParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link Darth_CoderParser#array_dec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArray_dec(Darth_CoderParser.Array_decContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#array_assignment}.
 	 * @param ctx the parse tree
@@ -344,13 +357,6 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGroupExpr(Darth_CoderParser.GroupExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToSide}
-	 * labeled alternative in {@link Darth_CoderParser#var}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitToSide(Darth_CoderParser.ToSideContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ToVar_Iden}
 	 * labeled alternative in {@link Darth_CoderParser#var}.
 	 * @param ctx the parse tree
@@ -371,12 +377,6 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFalse(Darth_CoderParser.FalseContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#array}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArray(Darth_CoderParser.ArrayContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#array_open}.
 	 * @param ctx the parse tree

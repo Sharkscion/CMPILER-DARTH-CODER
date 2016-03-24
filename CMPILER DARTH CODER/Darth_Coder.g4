@@ -42,13 +42,13 @@ MOD
 	: '%'
 	;
 	
-LPAR		
-	: '('
-	;
-	
-RPAR		
-	: ')'
-	;
+//LPAR		
+//	: '('
+//	;
+//	
+//RPAR		
+//	: ')'
+//	;
 	
 EQUAL		
 	: '='
@@ -268,6 +268,7 @@ start
 code_block
 	: var_dec code_block
 	| reg_assignment TERMINAL code_block
+	| boolean_assignment TERMINAL code_block
 	| array_assignment TERMINAL code_block
 	| if_conditional code_block
 	| iterative_con code_block
@@ -380,63 +381,7 @@ gen_comparison
 	| var_iden													#ToVarIden
 	| side														#ToSideVal
 	;
-//
-//rel_op
-//	: less_than
-//	| greater_than
-//	| greater_than_or_equal_to
-//	| less_than_or_equal_to
-//	;
-//
-//equal_op
-//	: not_equal
-//	| equal_equal
-//	;
-//
-//logi_op
-//	: and
-//	;
-//
-//logi_op2
-//	: or
-//	;
-//	
-//or
-//	: OR
-//	;
-//
-//and
-//	: AND
-//	;
-//
-//not_equal
-//	: NOT_EQUAL
-//	;
-//
-//equal_equal
-//	: EQUAL_EQUAL
-//	;
-//
-////hmm
-//less_than
-//	: ARRAY_OPEN
-//	;
-//
-//greater_than
-//	: ARRAY_CLOSE
-//	;
-//
-//greater_than_or_equal_to
-//	: GREATER_THAN_EQUAL_TO
-//	;
-//
-//less_than_or_equal_to
-//	: LESS_THAN_EQUAL_TO
-//	;
-//
-//not
-//	: NOT
-//	;
+
 
 //FUNCTIONS!
 	
@@ -470,9 +415,10 @@ constant_declaration
 //VARIABLE DECLARATIONS!
 	
 var_dec
-	: data_type statement TERMINAL		#VarDecFourTypes
-	| data_type var_iden TERMINAL		#VarDecVarIdenFourTypes
-	| SIDE boolean_statement TERMINAL	#VarDecBoolean
+	: data_type reg_assignment TERMINAL		#VarDecFourTypes
+	| data_type array_dec TERMINAL			#ArrayDec
+	| data_type var_iden TERMINAL		    #VarDecVarIdenFourTypes
+	| SIDE boolean_statement TERMINAL	    #VarDecBoolean
 	;
 
 boolean_statement
@@ -489,11 +435,23 @@ statement
 	: reg_assignment
 	| array_assignment
 	;
-	
+
+array_dec
+	: var_iden ARRAY_OPEN index ARRAY_CLOSE	
+	| var_iden ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES value? CLOSE_BRACES 
+	;
+			
+
 array_assignment
-	: var_iden array
+	: var_iden ARRAY_OPEN index ARRAY_CLOSE EQUAL var 				
 	;
 
+//array
+//	: ARRAY_OPEN index ARRAY_CLOSE										//	#ArrayDec
+//	| ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES value? CLOSE_BRACES //	#ArrayGroupAssignment
+//	| ARRAY_OPEN index ARRAY_CLOSE EQUAL var 							//	#ArraySingleAssignment
+//	;
+	
 reg_assignment
 	: var_iden EQUAL expr	
 	;
@@ -530,7 +488,6 @@ var
 	: literal											#ToLiteral
 	| func_call											#ToFunc_call
 	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	#GroupExpr
-	| side												#ToSide
 	| var_iden											#ToVar_Iden
 	;
 
@@ -538,30 +495,9 @@ side
 	: LIGHT_SIDE						#True
 	| DARK_SIDE							#False
 	;
-//add_sub
-//	: PLUS
-//	| MINUS
-//	;
-//
-//mul_div
-//	: MULT 
-//	| DIV
-//	| MOD
-//	;
-//
-//uni_op
-//	: NOT
-//	| PLUS
-//	| MINUS
-//	;
 
 //ARRAYS!
 
-array
-	: array_open index array_close	
-	| array_open index array_close equal OPEN_BRACES value? CLOSE_BRACES 
-	| array_open index array_close equal var 
-	;
 	
 array_open
 	: ARRAY_OPEN
@@ -582,7 +518,7 @@ index
 	;
 
 value
-	: var				#SingleLiteral
+	: var				    #SingleLiteral
 	| var COMMA WS? value	#MoreLiterals
 	;
 	
