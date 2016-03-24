@@ -7,7 +7,7 @@ Initiate{
 	_extra(0) = 8.8.
 	_extra(0) = 9.5.
 	Decode[_extra(0)].
- 	ForceInstance[DarkSide==LightSide]{
+ 	ForceInstance[![DarkSide]==LightSide && _extra(0) > 9.0]{
  		Decode["Pasok sa una: " + [1/1.0]].
  		
  			ForceInstance[5>6]{

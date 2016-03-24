@@ -367,11 +367,12 @@ condition4
 	;
 
 gen_comparison
-	: expr  													#ToExpr
-	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET	#NotBracketCond
-	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET		#BracketCond
-	| var_iden													#ToVarIden
-	| side														#ToSideVal
+	: expr  													
+	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET	
+	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET		
+	| var_iden		
+	| array_iden											
+	| side														
 	;
 
 

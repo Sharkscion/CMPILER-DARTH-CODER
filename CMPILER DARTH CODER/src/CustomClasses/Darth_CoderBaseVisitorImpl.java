@@ -490,18 +490,27 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		return new Value(false); 
 	}
 
-
-	@Override
-	public Value visitNotBracketCond(Darth_CoderParser.NotBracketCondContext ctx) { 
-		Value v = this.visit(ctx.condition());
-		return new Value(!v.asBoolean()); 
-	}
-	
 	@Override 
-	public Value visitBracketCond(Darth_CoderParser.BracketCondContext ctx) { 
-		Value v = this.visit(ctx.condition());
-		return new Value(v.asBoolean()); 
+	public Value visitGen_comparison(Darth_CoderParser.Gen_comparisonContext ctx) { 
+		
+		if(ctx.expr() != null)
+			return this.visit(ctx.expr());
+		else if(ctx.NOT() != null && ctx.condition() != null){
+			Value v = this.visit(ctx.condition());
+			return new Value(!v.asBoolean()); 
+		}else if(ctx.NOT() == null && ctx.condition()!= null){
+			Value v = this.visit(ctx.condition());
+			return new Value(v.asBoolean());
+		}else if(ctx.var_iden() != null){
+			return this.visit(ctx.var_iden());
+		}else if(ctx.side() != null){
+			return this.visit(ctx.side());
+		}else if(ctx.array_iden() != null)
+			return this.visit(ctx.array_iden());
+		else
+			return visitChildren(ctx); 
 	}
+
 
 	@Override 
 	public Value visitFunc_dec(Darth_CoderParser.Func_decContext ctx) {

@@ -210,40 +210,11 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRelationalExpr(Darth_CoderParser.RelationalExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToExpr}
-	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
+	 * Visit a parse tree produced by {@link Darth_CoderParser#gen_comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToExpr(Darth_CoderParser.ToExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NotBracketCond}
-	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotBracketCond(Darth_CoderParser.NotBracketCondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code BracketCond}
-	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBracketCond(Darth_CoderParser.BracketCondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ToVarIden}
-	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitToVarIden(Darth_CoderParser.ToVarIdenContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ToSideVal}
-	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitToSideVal(Darth_CoderParser.ToSideValContext ctx);
+	T visitGen_comparison(Darth_CoderParser.Gen_comparisonContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#func_dec}.
 	 * @param ctx the parse tree
