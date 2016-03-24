@@ -330,11 +330,19 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolean_statement(Darth_CoderParser.Boolean_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#boolean_assignment}.
+	 * Visit a parse tree produced by the {@code VarBooleanTrue}
+	 * labeled alternative in {@link Darth_CoderParser#boolean_assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBoolean_assignment(Darth_CoderParser.Boolean_assignmentContext ctx);
+	T visitVarBooleanTrue(Darth_CoderParser.VarBooleanTrueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code VarBooleanFalse}
+	 * labeled alternative in {@link Darth_CoderParser#boolean_assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarBooleanFalse(Darth_CoderParser.VarBooleanFalseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#statement}.
 	 * @param ctx the parse tree

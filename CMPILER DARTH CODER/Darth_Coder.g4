@@ -483,8 +483,8 @@ boolean_statement
 	;	
 	
 boolean_assignment
-	: var_iden EQUAL LIGHT_SIDE
-	| var_iden EQUAL DARK_SIDE
+	: var_iden EQUAL LIGHT_SIDE		  	#VarBooleanTrue
+	| var_iden EQUAL DARK_SIDE			#VarBooleanFalse
 	;
 
 statement

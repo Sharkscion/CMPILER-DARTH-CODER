@@ -2918,19 +2918,39 @@ public class Darth_CoderParser extends Parser {
 	}
 
 	public static class Boolean_assignmentContext extends ParserRuleContext {
+		public Boolean_assignmentContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_boolean_assignment; }
+	 
+		public Boolean_assignmentContext() { }
+		public void copyFrom(Boolean_assignmentContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class VarBooleanTrueContext extends Boolean_assignmentContext {
 		public Var_idenContext var_iden() {
 			return getRuleContext(Var_idenContext.class,0);
 		}
 		public TerminalNode EQUAL() { return getToken(Darth_CoderParser.EQUAL, 0); }
 		public TerminalNode LIGHT_SIDE() { return getToken(Darth_CoderParser.LIGHT_SIDE, 0); }
-		public TerminalNode DARK_SIDE() { return getToken(Darth_CoderParser.DARK_SIDE, 0); }
-		public Boolean_assignmentContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_boolean_assignment; }
+		public VarBooleanTrueContext(Boolean_assignmentContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitBoolean_assignment(this);
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitVarBooleanTrue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class VarBooleanFalseContext extends Boolean_assignmentContext {
+		public Var_idenContext var_iden() {
+			return getRuleContext(Var_idenContext.class,0);
+		}
+		public TerminalNode EQUAL() { return getToken(Darth_CoderParser.EQUAL, 0); }
+		public TerminalNode DARK_SIDE() { return getToken(Darth_CoderParser.DARK_SIDE, 0); }
+		public VarBooleanFalseContext(Boolean_assignmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitVarBooleanFalse(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2943,6 +2963,7 @@ public class Darth_CoderParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
 			case 1:
+				_localctx = new VarBooleanTrueContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(550);
@@ -2954,6 +2975,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new VarBooleanFalseContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(554);

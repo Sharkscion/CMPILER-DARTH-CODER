@@ -130,7 +130,11 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 			
 			String id = ctx.var_iden().VAR_IDEN().getText();
 			if(varManager.isVariableExists(id)){
-				System.out.println("VAR_IDEN value: " + varManager.getVariableValue(id));
+				Value val = varManager.getVariableValue(id);
+				if(val != null)
+					System.out.println("VAR_IDEN value: " + v);
+				else
+					System.err.println("NULL VALUE: " + id);
 			}else{
 				System.err.println("UNDECLARED VARIABLE: " + id);
 			}		
@@ -440,26 +444,29 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		
 		return Value.VOID;
 	}
-	/**brain not working anymore :(( **/
+	
 	@Override public Value visitVarDecBoolean(Darth_CoderParser.VarDecBooleanContext ctx) { 
 		String id = ctx.boolean_statement().var_iden().getText();
 		Value v = null;
-		System.out.println("HELLO");
 		if(!varManager.isVariableExists(id)){
 			Variable var = new Variable(Variable.SIDE,id);
 			varManager.addVariable(var);
-			if(ctx.boolean_statement().boolean_assignment().LIGHT_SIDE() != null){
-				v = new Value(true);
-				varManager.addVariableValue(var.getVariableName(), v);
-			}else if(ctx.boolean_statement().boolean_assignment().DARK_SIDE() != null){
-				v = new Value(false);
-				varManager.addVariableValue(var.getVariableName(), v);
-			}else{
-				
-				String varType = varManager.getVariable(id).getType();
-				String valType =ctx.boolean_statement().boolean_assignment().getText();
-				System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
-			}
+			varManager.addVariableValue(var.getVariableName(), null);
+		}else{
+			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
+		}
+		
+		return v;
+	}
+	@Override 
+	public Value visitVarBooleanTrue(Darth_CoderParser.VarBooleanTrueContext ctx) { 
+		String id = ctx.var_iden().getText();
+		Value v = null;
+		if(!varManager.isVariableExists(id)){
+			Variable var = new Variable(Variable.SIDE,id);
+			v = new Value(true);
+			varManager.addVariable(var);
+			varManager.addVariableValue(var.getVariableName(),v);
 			
 		}else{
 			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
@@ -467,17 +474,29 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		
 		return v;
 	}
-	
+
+	@Override 
+	public Value visitVarBooleanFalse(Darth_CoderParser.VarBooleanFalseContext ctx) { 
+		String id = ctx.var_iden().getText();
+		Value v = null;
+		if(!varManager.isVariableExists(id)){
+			Variable var = new Variable(Variable.SIDE,id);
+			v = new Value(false);
+			varManager.addVariable(var);
+			varManager.addVariableValue(var.getVariableName(),v);
+			
+		}else{
+			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
+		}
+		
+		return v;
+	}
+
 	@Override 
 	public Value visitBoolean_statement(Darth_CoderParser.Boolean_statementContext ctx) { 
 		return visitChildren(ctx); 
 	}
-	
-	@Override 
-	public Value visitBoolean_assignment(Darth_CoderParser.Boolean_assignmentContext ctx) { 
-		
-		return visitChildren(ctx);
-	}
+
 	
 	@Override
 	public Value visitStatement(Darth_CoderParser.StatementContext ctx) {
@@ -494,7 +513,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 			
 		String id = ctx.var_iden().VAR_IDEN().getText();
 		Value value = this.visit(ctx.expr());
-		
+	
 		if(varManager.isVariableExists(id)){
 			
 			if(varManager.isDataTypeMatch(id, value)){
@@ -527,15 +546,15 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		Value left = this.visit(ctx.expr());
 		Value right = this.visit(ctx.expr2());
 
-		double dLeft = Double.parseDouble(left.toString());
-		double dRight = Double.parseDouble(right.toString());
-		 
 		switch(ctx.op.getType()){
 			case Darth_CoderParser.PLUS:
-				 if(left.isString() || right.isString())
+				 if(left.isString() || right.isString()){
 					 return new Value(left.asString() + right.asString());
+				 } 
 				 else if (!left.isString() && !right.isString()){
 					 if(left.isDouble() || right.isDouble()){
+						 double dLeft = Double.parseDouble(left.toString());
+						 double dRight = Double.parseDouble(right.toString());
 						 return new Value(dLeft + dRight);
 					 } 
 					 else{
@@ -545,6 +564,8 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 				
 			case Darth_CoderParser.MINUS:
 				 if(left.isDouble() || right.isDouble()){
+					 double dLeft = Double.parseDouble(left.toString());
+					 double dRight = Double.parseDouble(right.toString());
 					 return new Value(dLeft - dRight);
 				 }
 				 else

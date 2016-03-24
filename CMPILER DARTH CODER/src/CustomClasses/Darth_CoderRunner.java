@@ -4,7 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -45,6 +51,8 @@ public class Darth_CoderRunner {
 			parser.addErrorListener(parserErrorListener);
 			ParseTree tree = parser.start();
 			
+		
+	        
 			if(lexerErrorListener.hasErrors()){
 				System.err.println("@LEXICAL ERROR: ");
 				System.err.println(lexerErrorListener);
@@ -69,6 +77,20 @@ public class Darth_CoderRunner {
 					}
 				}
 			}
+			
+		
+			
+			 //show AST in GUI
+//	        JFrame frame = new JFrame("Antlr AST");
+//	        TreeViewer viewr = new TreeViewer(Arrays.asList(
+//	                parser.getRuleNames()),tree);
+//	        viewr.setScale(1);//scale a little
+//	        JScrollPane scrollpane = new JScrollPane(viewr);
+//	        frame.add(scrollpane);
+//	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//	        frame.setSize(200,200);
+//	        frame.setVisible(true);
+	        
 			System.out.println(tree.toStringTree(parser));			
 	    
 	    
