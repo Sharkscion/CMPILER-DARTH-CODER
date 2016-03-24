@@ -41,15 +41,7 @@ DIV
 MOD			
 	: '%'
 	;
-	
-//LPAR		
-//	: '('
-//	;
-//	
-//RPAR		
-//	: ')'
-//	;
-	
+
 EQUAL		
 	: '='
 	;
@@ -481,11 +473,11 @@ gen_var
 	;
 //kasama pa ba dito yung -(expr) ?
 var
-	: literal											//#ToLiteral
-	| func_call											//#ToFunc_call
-	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	//#GroupExpr
-	| var_iden											//#VarIden
-	| array_iden										//#ToArrayIden
+	: literal											
+	| func_call											
+	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	
+	| var_iden											
+	| array_iden										
 	;
 
 side
@@ -515,8 +507,7 @@ index
 	;
 
 value
-	: var				    //#SingleLiteral
-//	| var COMMA WS? value	#MoreLiterals
+	: var
 	;	
 	
 //ATOMS!
