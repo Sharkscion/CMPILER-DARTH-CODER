@@ -132,7 +132,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 			if(varManager.isVariableExists(id)){
 				Value val = varManager.getVariableValue(id);
 				if(val != null)
-					System.out.println("VAR_IDEN value: " + v);
+					System.out.println("VAR_IDEN value: " + val);
 				else
 					System.err.println("NULL VALUE: " + id);
 			}else{
@@ -446,51 +446,48 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	}
 	
 	@Override public Value visitVarDecBoolean(Darth_CoderParser.VarDecBooleanContext ctx) { 
-		String id = ctx.boolean_statement().var_iden().getText();
 		Value v = null;
-		if(!varManager.isVariableExists(id)){
-			Variable var = new Variable(Variable.SIDE,id);
-			varManager.addVariable(var);
-			varManager.addVariableValue(var.getVariableName(), null);
-		}else{
-			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
+		
+		if(ctx.boolean_statement().var_iden() != null){
+			String id = ctx.boolean_statement().var_iden().getText();
+			if(!varManager.isVariableExists(id)){
+				Variable var = new Variable(Variable.SIDE,id);
+				varManager.addVariable(var);
+				varManager.addVariableValue(var.getVariableName(), null);
+				return Value.VOID;
+			}else{
+				System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
+			}
+		}else if (ctx.boolean_statement().boolean_assignment() != null){
+			
+			String id = ctx.boolean_statement().boolean_assignment().var_iden().getText();
+			
+			if(!varManager.isVariableExists(id)){
+				
+				if(ctx.boolean_statement().boolean_assignment().LIGHT_SIDE() != null){
+					Variable var = new Variable(Variable.SIDE,id);
+					v = new Value(true);
+					varManager.addVariable(var);
+					varManager.addVariableValue(var.getVariableName(),v);
+				}else if(ctx.boolean_statement().boolean_assignment().DARK_SIDE() != null){
+					Variable var = new Variable(Variable.SIDE,id);
+					v = new Value(false);
+					varManager.addVariable(var);
+					varManager.addVariableValue(var.getVariableName(),v);
+				}else{
+					String varType = varManager.getVariable(id).getType();
+					String valType = ctx.boolean_statement().boolean_assignment().getText();
+					System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+				}
+			}else{
+				System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
+			}
 		}
 		
-		return v;
-	}
-	@Override 
-	public Value visitVarBooleanTrue(Darth_CoderParser.VarBooleanTrueContext ctx) { 
-		String id = ctx.var_iden().getText();
-		Value v = null;
-		if(!varManager.isVariableExists(id)){
-			Variable var = new Variable(Variable.SIDE,id);
-			v = new Value(true);
-			varManager.addVariable(var);
-			varManager.addVariableValue(var.getVariableName(),v);
-			
-		}else{
-			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
-		}
 		
 		return v;
 	}
 
-	@Override 
-	public Value visitVarBooleanFalse(Darth_CoderParser.VarBooleanFalseContext ctx) { 
-		String id = ctx.var_iden().getText();
-		Value v = null;
-		if(!varManager.isVariableExists(id)){
-			Variable var = new Variable(Variable.SIDE,id);
-			v = new Value(false);
-			varManager.addVariable(var);
-			varManager.addVariableValue(var.getVariableName(),v);
-			
-		}else{
-			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
-		}
-		
-		return v;
-	}
 
 	@Override 
 	public Value visitBoolean_statement(Darth_CoderParser.Boolean_statementContext ctx) { 

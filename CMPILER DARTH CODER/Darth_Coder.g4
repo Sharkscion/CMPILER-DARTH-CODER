@@ -2,7 +2,6 @@
  * Define a grammar called Hello
  */
 grammar Darth_Coder;
-
 @header {
 	package ANTLRGeneratedClasses;
 }
@@ -379,66 +378,65 @@ gen_comparison
 	| NOT OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET	#NotBracketCond
 	| OPEN_SQUARE_BRACKET condition CLOSE_SQUARE_BRACKET		#BracketCond
 	| var_iden													#ToVarIden
-	| LIGHT_SIDE												#True
-	| DARK_SIDE													#False
+	| side														#ToSideVal
 	;
-
-rel_op
-	: less_than
-	| greater_than
-	| greater_than_or_equal_to
-	| less_than_or_equal_to
-	;
-
-equal_op
-	: not_equal
-	| equal_equal
-	;
-
-logi_op
-	: and
-	;
-
-logi_op2
-	: or
-	;
-	
-or
-	: OR
-	;
-
-and
-	: AND
-	;
-
-not_equal
-	: NOT_EQUAL
-	;
-
-equal_equal
-	: EQUAL_EQUAL
-	;
-
-//hmm
-less_than
-	: ARRAY_OPEN
-	;
-
-greater_than
-	: ARRAY_CLOSE
-	;
-
-greater_than_or_equal_to
-	: GREATER_THAN_EQUAL_TO
-	;
-
-less_than_or_equal_to
-	: LESS_THAN_EQUAL_TO
-	;
-
-not
-	: NOT
-	;
+//
+//rel_op
+//	: less_than
+//	| greater_than
+//	| greater_than_or_equal_to
+//	| less_than_or_equal_to
+//	;
+//
+//equal_op
+//	: not_equal
+//	| equal_equal
+//	;
+//
+//logi_op
+//	: and
+//	;
+//
+//logi_op2
+//	: or
+//	;
+//	
+//or
+//	: OR
+//	;
+//
+//and
+//	: AND
+//	;
+//
+//not_equal
+//	: NOT_EQUAL
+//	;
+//
+//equal_equal
+//	: EQUAL_EQUAL
+//	;
+//
+////hmm
+//less_than
+//	: ARRAY_OPEN
+//	;
+//
+//greater_than
+//	: ARRAY_CLOSE
+//	;
+//
+//greater_than_or_equal_to
+//	: GREATER_THAN_EQUAL_TO
+//	;
+//
+//less_than_or_equal_to
+//	: LESS_THAN_EQUAL_TO
+//	;
+//
+//not
+//	: NOT
+//	;
 
 //FUNCTIONS!
 	
@@ -483,8 +481,8 @@ boolean_statement
 	;	
 	
 boolean_assignment
-	: var_iden EQUAL LIGHT_SIDE		  	#VarBooleanTrue
-	| var_iden EQUAL DARK_SIDE			#VarBooleanFalse
+	: var_iden EQUAL LIGHT_SIDE		  	
+	| var_iden EQUAL DARK_SIDE			
 	;
 
 statement
@@ -532,9 +530,14 @@ var
 	: literal											#ToLiteral
 	| func_call											#ToFunc_call
 	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	#GroupExpr
+	| side												#ToSide
 	| var_iden											#ToVar_Iden
 	;
 
+side
+	: LIGHT_SIDE						#True
+	| DARK_SIDE							#False
+	;
 //add_sub
 //	: PLUS
 //	| MINUS

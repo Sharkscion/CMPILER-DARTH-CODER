@@ -181,97 +181,12 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitToVarIden(Darth_CoderParser.ToVarIdenContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code True}
+	 * Visit a parse tree produced by the {@code ToSideVal}
 	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTrue(Darth_CoderParser.TrueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code False}
-	 * labeled alternative in {@link Darth_CoderParser#gen_comparison}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFalse(Darth_CoderParser.FalseContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#rel_op}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRel_op(Darth_CoderParser.Rel_opContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#equal_op}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqual_op(Darth_CoderParser.Equal_opContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#logi_op}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLogi_op(Darth_CoderParser.Logi_opContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#logi_op2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLogi_op2(Darth_CoderParser.Logi_op2Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#or}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOr(Darth_CoderParser.OrContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#and}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnd(Darth_CoderParser.AndContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#not_equal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot_equal(Darth_CoderParser.Not_equalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#equal_equal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqual_equal(Darth_CoderParser.Equal_equalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#less_than}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLess_than(Darth_CoderParser.Less_thanContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#greater_than}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGreater_than(Darth_CoderParser.Greater_thanContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#greater_than_or_equal_to}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGreater_than_or_equal_to(Darth_CoderParser.Greater_than_or_equal_toContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#less_than_or_equal_to}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLess_than_or_equal_to(Darth_CoderParser.Less_than_or_equal_toContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#not}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot(Darth_CoderParser.NotContext ctx);
+	T visitToSideVal(Darth_CoderParser.ToSideValContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#func_dec}.
 	 * @param ctx the parse tree
@@ -330,19 +245,11 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolean_statement(Darth_CoderParser.Boolean_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code VarBooleanTrue}
-	 * labeled alternative in {@link Darth_CoderParser#boolean_assignment}.
+	 * Visit a parse tree produced by {@link Darth_CoderParser#boolean_assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarBooleanTrue(Darth_CoderParser.VarBooleanTrueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code VarBooleanFalse}
-	 * labeled alternative in {@link Darth_CoderParser#boolean_assignment}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVarBooleanFalse(Darth_CoderParser.VarBooleanFalseContext ctx);
+	T visitBoolean_assignment(Darth_CoderParser.Boolean_assignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#statement}.
 	 * @param ctx the parse tree
@@ -437,12 +344,33 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGroupExpr(Darth_CoderParser.GroupExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ToSide}
+	 * labeled alternative in {@link Darth_CoderParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToSide(Darth_CoderParser.ToSideContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ToVar_Iden}
 	 * labeled alternative in {@link Darth_CoderParser#var}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitToVar_Iden(Darth_CoderParser.ToVar_IdenContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code True}
+	 * labeled alternative in {@link Darth_CoderParser#side}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrue(Darth_CoderParser.TrueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code False}
+	 * labeled alternative in {@link Darth_CoderParser#side}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFalse(Darth_CoderParser.FalseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#array}.
 	 * @param ctx the parse tree

@@ -1,7 +1,12 @@
 Initiate{
 
 
- 	ForceInstance[4==4]{
+	Side _ic .
+	
+	_ic = LightSide.
+	Decode[_ic].
+	
+ 	ForceInstance[DarkSide==LightSide]{
  		Decode["Pasok sa una: " + [1/1.0]].
  		
  			ForceInstance[5>6]{
