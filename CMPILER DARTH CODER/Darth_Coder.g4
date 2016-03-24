@@ -437,10 +437,10 @@ statement
 	;
 
 array_dec
-	: var_iden ARRAY_OPEN index ARRAY_CLOSE	
-	| var_iden ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES value? CLOSE_BRACES 
+	: var_iden ARRAY_OPEN index ARRAY_CLOSE		#ArrayDecNoValues
+	| var_iden ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES (value COMMA?)* CLOSE_BRACES	#ArrayDecWithValues 
 	;
-			
+		
 
 array_assignment
 	: var_iden ARRAY_OPEN index ARRAY_CLOSE EQUAL var 				
@@ -518,9 +518,9 @@ index
 	;
 
 value
-	: var				    #SingleLiteral
-	| var COMMA WS? value	#MoreLiterals
-	;
+	: var				    //#SingleLiteral
+//	| var COMMA WS? value	#MoreLiterals
+	;	
 	
 //ATOMS!
 

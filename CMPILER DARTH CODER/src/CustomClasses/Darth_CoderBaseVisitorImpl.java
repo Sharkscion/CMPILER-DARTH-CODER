@@ -1,5 +1,6 @@
 package CustomClasses;
 
+import java.util.List;
 import java.util.Scanner;
 
 import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
@@ -565,7 +566,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		return v;
 	}
 	
-	@Override 
+	/*@Override 
 	public Value visitArrayDec(Darth_CoderParser.ArrayDecContext ctx) { 
 		
 		System.out.println("HELLO");
@@ -638,9 +639,23 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		}
 		
 		return Value.VOID; 
+	}*/
+
+	@Override 
+	public Value visitArrayDecWithValues(Darth_CoderParser.ArrayDecWithValuesContext ctx) { 
+		/*if(ctx.value() != null) {
+			System.out.println("not null");
+		}*/
+		
+		List<Darth_CoderParser.ValueContext> values = ctx.value();
+		
+		for(Darth_CoderParser.ValueContext value: values) {
+			System.out.println(value.getText());
+		}
+		
+		
+		return Value.VOID;
 	}
-
-
 	
 	@Override 
 	public Value visitArray_assignment(Darth_CoderParser.Array_assignmentContext ctx) { 
@@ -926,16 +941,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override 
 	public Value visitIndex(Darth_CoderParser.IndexContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitSingleLiteral(Darth_CoderParser.SingleLiteralContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	@Override 
-	public Value visitMoreLiterals(Darth_CoderParser.MoreLiteralsContext ctx) { 
 		return visitChildren(ctx); 
 	}
 	
