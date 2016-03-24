@@ -145,8 +145,106 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	}
 	
 	@Override 
-	public Value visitIterative_con(Darth_CoderParser.Iterative_conContext ctx) { 
-		return visitChildren(ctx); 
+	public Value visitWhileConditionCodeBlock(Darth_CoderParser.WhileConditionCodeBlockContext ctx) { 
+		Value evaluated = this.visit(ctx.condition());
+		
+		while(evaluated.asBoolean()) {
+			this.visit(ctx.code_block());
+			
+			evaluated = this.visit(ctx.condition());
+		}
+		
+		return Value.VOID;
+	}
+	
+	@Override public Value visitWhileCodeBlock(Darth_CoderParser.WhileCodeBlockContext ctx) {
+		
+		System.err.println("No condition, infinite loop");
+		
+		return Value.VOID; 
+	}
+	
+	@Override public Value visitWhile(Darth_CoderParser.WhileContext ctx) { 
+		
+		System.err.println("There ain't anything here, infinite loop");
+		
+		return Value.VOID;
+	}
+	
+	@Override public Value visitDoWhileCodeBlockCondition(Darth_CoderParser.DoWhileCodeBlockConditionContext ctx) { 
+		
+		this.visit(ctx.code_block());
+		
+		Value evaluated = this.visit(ctx.condition());
+		
+		while(evaluated.asBoolean()) {
+			this.visit(ctx.code_block());
+			
+			evaluated = this.visit(ctx.condition());
+		}
+		
+		return Value.VOID;
+		
+	}
+	
+	@Override public Value visitDoWhileCodeBlock(Darth_CoderParser.DoWhileCodeBlockContext ctx) { 
+		
+		System.err.println("No condition, infinite loop");
+		
+		return Value.VOID;
+	}
+	
+	@Override public Value visitDoWhileCondition(Darth_CoderParser.DoWhileConditionContext ctx) { 
+		
+		
+		Value evaluated = this.visit(ctx.condition());
+		
+		while(evaluated.asBoolean()) {
+			
+			
+			evaluated = this.visit(ctx.condition());
+		}
+		
+		return Value.VOID;
+	}
+	
+	@Override public Value visitDoWhile(Darth_CoderParser.DoWhileContext ctx) { 
+		
+		System.err.println("There ain't anything here, infinite loop");
+		
+		return Value.VOID; 
+		
+	}
+	
+	@Override 
+	public Value visitForConditionCodeBlock(Darth_CoderParser.ForConditionCodeBlockContext ctx) { 
+		
+		Value start = this.visit(ctx.reg_assignment());
+		Value evaluated = this.visit(ctx.condition());
+		
+		while(evaluated.asBoolean()) {
+			this.visit(ctx.code_block());
+			
+			start = this.visit(ctx.incr());
+			
+			evaluated = this.visit(ctx.condition());
+		}
+		
+		return Value.VOID;
+	}
+	
+	@Override public Value visitForCondition(Darth_CoderParser.ForConditionContext ctx) { 
+		Value start = this.visit(ctx.reg_assignment());
+		Value evaluated = this.visit(ctx.condition());
+		
+		while(evaluated.asBoolean()) {
+			
+			start = this.visit(ctx.incr());
+			
+			evaluated = this.visit(ctx.condition());
+		}
+		
+		return Value.VOID;
 	}
 	
 	@Override 
@@ -312,6 +410,59 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 				throw new RuntimeException("unknown operator: " + Darth_CoderParser.VOCABULARY.getDisplayName(ctx.op.getType()));
 			}
 		}
+	}
+	
+	@Override public Value visitVarIden(Darth_CoderParser.VarIdenContext ctx) { 
+		String id = ctx.getText();
+		Value value = varManager.getVariableValue(id);
+		
+		if(value == null) {
+			throw new RuntimeException("no such variable: " + id);
+		}
+		
+		return value;
+	}
+	
+	@Override public Value visitIncrement(Darth_CoderParser.IncrementContext ctx) { 
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		
+		Value value = new Value (Integer.parseInt(varManager.getVariableValue(id).toString()) + 1);
+		
+		if(varManager.isVariableExists(id)) {
+			if(varManager.isDataTypeMatch(id, value)) {
+				varManager.editVariableValue(id, value);
+			}else{
+				String varType = varManager.getVariable(id).getType();
+				String valType = value.getType();
+				System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+value + " is "+valType);
+			}
+		}else{
+			System.err.println("UNDECLARED VARIABLE: "+ id);
+		}
+
+		return value;
+		
+	}
+	
+	@Override public Value visitDecrement(Darth_CoderParser.DecrementContext ctx) { 
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		
+		Value value = new Value (Integer.parseInt(varManager.getVariableValue(id).toString()) - 1);
+		
+		if(varManager.isVariableExists(id)) {
+			if(varManager.isDataTypeMatch(id, value)) {
+				varManager.editVariableValue(id, value);
+			}else{
+				String varType = varManager.getVariable(id).getType();
+				String valType = value.getType();
+				System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+value + " is "+valType);
+			}
+		}else{
+			System.err.println("UNDECLARED VARIABLE: "+ id);
+		}
+
+		return value;
+ 
 	}
 
 	@Override 
@@ -527,16 +678,17 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		return value;
 		
 	}
-	
 	@Override 
 	public Value visitVar_iden(Darth_CoderParser.Var_idenContext ctx) { 
 		return new Value(ctx.VAR_IDEN().getText()); 
 	}
 	
-	@Override 
-	public Value visitIncr(Darth_CoderParser.IncrContext ctx) { 
-		return visitChildren(ctx);
-	}
+	//@Override 
+	//public Value visitVar_iden(Darth_CoderParser.Var_idenContext ctx) { 
+	//	return new Value(ctx.VAR_IDEN().getText()); 
+	//}
+	
+	
 	
 	@Override 
 	public Value visitAdditiveExpr(Darth_CoderParser.AdditiveExprContext ctx) { 
