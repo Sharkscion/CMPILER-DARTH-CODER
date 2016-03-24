@@ -33,7 +33,11 @@ public class VariableManager {
 	}
 	
 	public void addVariable(Variable var){
-		varList.add(var);
+		
+		if(var instanceof Array)
+			varList.add((Array)var);
+		else
+			varList.add(var);
 	}
 	
 	public void addVariableValue(String id, Value val){

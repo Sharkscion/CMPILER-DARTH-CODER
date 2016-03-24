@@ -311,7 +311,7 @@ scan_legion
 	;
 	
 print
-	: PRINT OPEN_SQUARE_BRACKET var_iden? expr? CHARACTER_LITERAL? func_call? CLOSE_SQUARE_BRACKET TERMINAL
+	: PRINT OPEN_SQUARE_BRACKET var_iden? array_iden? expr? CHARACTER_LITERAL? func_call? CLOSE_SQUARE_BRACKET TERMINAL
 	;
 	
 //ITERATIVE CONSTRUCTS!
@@ -398,9 +398,7 @@ return_statement
 	| RETURN expr TERMINAL
 	;
 
-func_iden
-	: FUNC_IDEN
-	;
+
 	
 parameter
 	: data_type VAR_IDEN | data_type VAR_IDEN COMMA parameter
@@ -416,7 +414,8 @@ constant_declaration
 	
 var_dec
 	: data_type reg_assignment TERMINAL		#VarDecFourTypes
-	| data_type array_dec TERMINAL			#ArrayDec
+	| data_type var_iden ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES (value (COMMA value)*)? CLOSE_BRACES TERMINAL	#ArrayDecWithValues 
+	| data_type var_iden ARRAY_OPEN index ARRAY_CLOSE TERMINAL		#ArrayDecNoValues
 	| data_type var_iden TERMINAL		    #VarDecVarIdenFourTypes
 	| SIDE boolean_statement TERMINAL	    #VarDecBoolean
 	;
@@ -435,25 +434,22 @@ statement
 	: reg_assignment
 	| array_assignment
 	;
-
-array_dec
-	: var_iden ARRAY_OPEN index ARRAY_CLOSE		#ArrayDecNoValues
-	| var_iden ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES (value COMMA?)* CLOSE_BRACES	#ArrayDecWithValues 
-	;
-		
+	
 
 array_assignment
-	: var_iden ARRAY_OPEN index ARRAY_CLOSE EQUAL var 				
+	: array_iden EQUAL var 				
 	;
 
-//array
-//	: ARRAY_OPEN index ARRAY_CLOSE										//	#ArrayDec
-//	| ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES value? CLOSE_BRACES //	#ArrayGroupAssignment
-//	| ARRAY_OPEN index ARRAY_CLOSE EQUAL var 							//	#ArraySingleAssignment
-//	;
-	
 reg_assignment
 	: var_iden EQUAL expr	
+	;
+
+array_iden
+	: var_iden ARRAY_OPEN index ARRAY_CLOSE
+	;
+	
+func_iden
+	: FUNC_IDEN
 	;
 	
 var_iden
@@ -485,10 +481,11 @@ gen_var
 	;
 //kasama pa ba dito yung -(expr) ?
 var
-	: literal											#ToLiteral
-	| func_call											#ToFunc_call
-	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	#GroupExpr
-	| var_iden											#VarIden
+	: literal											//#ToLiteral
+	| func_call											//#ToFunc_call
+	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	//#GroupExpr
+	| var_iden											//#VarIden
+	| array_iden										//#ToArrayIden
 	;
 
 side

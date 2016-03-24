@@ -16,10 +16,14 @@ public class Array extends Variable {
 		memory = new HashMap<Integer, Value>();
 	}
 	
+	public void editArrayValue(int index, Value v){
+		memory.replace(index, v);
+	}
 	public boolean isIndexOutOfBounds(int i){
-		 if(i<0 || i>=size )
-			 return true;
-		return false;
+		 if(i>=0 && i<size ){
+			 return false;
+		 }
+		return true;
 	}
 	
 	public Value getArrayValue(int index){
@@ -31,15 +35,9 @@ public class Array extends Variable {
 		return null;
 	}
 	
-	public boolean addArrayValue(Value v){
-		
-		if(!isIndexOutOfBounds(counter)){
-			memory.put(counter, v);
-			counter++;
-			return true;
-		}
-		
-		return false;
+	public void addArrayValue(Value v){
+		memory.put(counter, v);
+		counter++;
 	}
 	
 	public int getSize() {
@@ -48,6 +46,10 @@ public class Array extends Variable {
 
 	public void setSize(int size) {
 		this.size = size;
+		memory.clear();
+		for(int i=0; i<size; i++){
+			memory.put(i, null);
+		}
 	}
 
 	public Map<Integer, Value> getMemory() {

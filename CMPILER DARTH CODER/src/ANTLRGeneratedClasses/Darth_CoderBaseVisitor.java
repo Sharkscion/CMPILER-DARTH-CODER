@@ -278,13 +278,6 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunc_iden(Darth_CoderParser.Func_idenContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitParameter(Darth_CoderParser.ParameterContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -306,7 +299,14 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArrayDec(Darth_CoderParser.ArrayDecContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArrayDecWithValues(Darth_CoderParser.ArrayDecWithValuesContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitArrayDecNoValues(Darth_CoderParser.ArrayDecNoValuesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -348,13 +348,6 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArray_dec(Darth_CoderParser.Array_decContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitArray_assignment(Darth_CoderParser.Array_assignmentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -363,6 +356,20 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitReg_assignment(Darth_CoderParser.Reg_assignmentContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitArray_iden(Darth_CoderParser.Array_idenContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFunc_iden(Darth_CoderParser.Func_idenContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -432,28 +439,7 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToLiteral(Darth_CoderParser.ToLiteralContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitToFunc_call(Darth_CoderParser.ToFunc_callContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitGroupExpr(Darth_CoderParser.GroupExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitVarIden(Darth_CoderParser.VarIdenContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVar(Darth_CoderParser.VarContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -502,14 +488,7 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSingleLiteral(Darth_CoderParser.SingleLiteralContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitMoreLiterals(Darth_CoderParser.MoreLiteralsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitValue(Darth_CoderParser.ValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

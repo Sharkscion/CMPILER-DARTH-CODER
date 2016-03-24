@@ -129,7 +129,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		}
 		else if(ctx.var_iden() != null) {
 			v = this.visit(ctx.var_iden());
-			
 			String id = ctx.var_iden().VAR_IDEN().getText();
 			if(varManager.isVariableExists(id)){
 				Value val = varManager.getVariableValue(id);
@@ -138,9 +137,17 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 				else
 					System.err.println("NULL VALUE: " + id);
 			}else{
-				System.err.println("UNDECLARED VARIABLE: " + id);
+				System.err.println("VAR_IDEN UNDECLARED VARIABLE: " + id);
 			}		
 			
+		}else if(ctx.array_iden() != null){
+			String id = ctx.array_iden().var_iden().VAR_IDEN().getText();
+			v = this.visit(ctx.array_iden());
+			if(v != null){
+				System.out.println("ARRAY_IDEN Value: "+ v);
+			}else{
+				System.err.println("NULL VALUE: "+ id);
+			}
 		}
 		
 		return v; 
@@ -413,17 +420,23 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 			}
 		}
 	}
-	
-	@Override public Value visitVarIden(Darth_CoderParser.VarIdenContext ctx) { 
-		String id = ctx.getText();
-		Value value = varManager.getVariableValue(id);
+
+	@Override 
+	public Value visitVar(Darth_CoderParser.VarContext ctx) { 
 		
-		if(value == null) {
-			throw new RuntimeException("no such variable: " + id);
-		}
-		
-		return value;
+		if(ctx.literal() != null){
+			return this.visit(ctx.literal());
+		}else if(ctx.func_call() != null){
+			return this.visit(ctx.func_call());
+		}else if(ctx.expr() != null){
+			return this.visit(ctx.expr());
+		}else if(ctx.var_iden()!= null){
+			return this.visit(ctx.var_iden());
+		}else 
+			return this.visit(ctx.array_iden());
 	}
+
+
 	
 	@Override public Value visitIncrement(Darth_CoderParser.IncrementContext ctx) { 
 		String id = ctx.var_iden().VAR_IDEN().getText();
@@ -518,7 +531,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	@Override 
 	public Value visitVarDecFourTypes(Darth_CoderParser.VarDecFourTypesContext ctx) { 
 		
-		System.out.println("PASOK VA DEC FUR TYPES");
 		String id = ctx.reg_assignment().var_iden().VAR_IDEN().getText();
 		Value v = this.visit(ctx.reg_assignment().expr());
 		
@@ -566,37 +578,20 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		return v;
 	}
 	
-	/*@Override 
-	public Value visitArrayDec(Darth_CoderParser.ArrayDecContext ctx) { 
-		
-		System.out.println("HELLO");
-		String id = ctx.array_dec().var_iden().VAR_IDEN().getText();
-		Value index = this.visit(ctx.array_dec().index());
-		ValueContext v =  ctx.array_dec().value();
+	@Override 
+	public Value visitArrayDecNoValues(Darth_CoderParser.ArrayDecNoValuesContext ctx) { 
 	
-
-//        for(MuParser.Condition_blockContext condition : conditions) {
-//
-//            Value evaluated = this.visit(condition.expr());
-//
-//            if(evaluated.asBoolean()) {
-//                evaluatedBlock = true;
-//                // evaluate this block whose expr==true
-//                this.visit(condition.stat_block());
-//                break;
-//            }
-//        }
-//        
-		if(v != null){
-			System.out.println("BUHAY SI V");
-		}
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		Value index = this.visit(ctx.index());
+		
 		if(!varManager.isVariableExists(id)){
 			
 			if(index != null){
 				boolean hasError = false;
+				Array a = null;
 				if(ctx.data_type().imperial_credit() != null){
 					if(index.isInt()){
-						Array a = new Array(Variable.IC, id);
+						a = new Array(Variable.IC, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
 					}else{
@@ -604,7 +599,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 					}
 				}else if(ctx.data_type().galactic_credit() != null){
 					if(index.isInt()){
-						Array a = new Array(Variable.GC, id);
+						a = new Array(Variable.GC, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
 					}else{
@@ -612,7 +607,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 					}
 				}else if(ctx.data_type().unit() != null){
 					if(index.isInt()){
-						Array a = new Array(Variable.UN, id);
+						a = new Array(Variable.UN, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
 					}else{
@@ -620,7 +615,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 					}
 				}else if(ctx.data_type().legion() != null){
 					if(index.isInt()){
-						Array a = new Array(Variable.LE, id);
+						a = new Array(Variable.LE, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
 					}else{
@@ -639,27 +634,151 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 		}
 		
 		return Value.VOID; 
-	}*/
+	}
 
 	@Override 
 	public Value visitArrayDecWithValues(Darth_CoderParser.ArrayDecWithValuesContext ctx) { 
-		/*if(ctx.value() != null) {
-			System.out.println("not null");
-		}*/
+	
+		String id = ctx.var_iden().VAR_IDEN().getText();
 		
-		List<Darth_CoderParser.ValueContext> values = ctx.value();
-		
-		for(Darth_CoderParser.ValueContext value: values) {
-			System.out.println(value.getText());
+		if(!varManager.isVariableExists(id)){
+			Array arr = null;
+			int arrSize = 0;
+			
+			if(ctx.data_type().imperial_credit()!= null){
+				arr = new Array(Variable.IC, id);
+			}else if(ctx.data_type().galactic_credit()!= null){
+				arr = new Array(Variable.IC, id);
+			}else if(ctx.data_type().unit()!= null){
+				arr = new Array(Variable.UN, id);
+			}else if(ctx.data_type().legion()!= null){
+				arr = new Array(Variable.LE, id);
+			}		
+			
+			if(arr != null){
+				int counter = 0;
+				int addCounter = 0;
+				String varType = arr.getType();
+				
+				List<Darth_CoderParser.ValueContext> vList = ctx.value();
+				for(Darth_CoderParser.ValueContext value: vList) {
+					
+					counter++;
+					Value v = this.visit(value.var());
+					String valType = v.getType();
+					
+					switch(arr.getType()){
+						case Variable.IC:
+							if(!v.getType().equals(Variable.UN) &&  !v.getType().equals(Variable.LE) &&
+							   !v.getType().equals(Variable.SIDE)){
+								Double dVal = Double.parseDouble(v.toString());
+								arr.addArrayValue(new Value(dVal));
+								arrSize++;
+								addCounter++;
+							} else{
+								System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+							}break;
+						case Variable.LE:
+							if(v.getType().equals(Variable.LE) || v.getType().equals(Variable.UN)){
+								arr.addArrayValue(new Value(v.toString()));
+								arrSize++;
+								addCounter++;
+							} else{
+								System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+							}break;
+						case Variable.GC:
+							if(v.getType().equals(Variable.GC)){
+								arr.addArrayValue(new Value(v.asInt()));
+								arrSize++;
+								addCounter++;
+							} else{
+								System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+							}break;
+						case Variable.UN:
+							if(v.getType().equals(Variable.UN)){
+								arr.addArrayValue(new Value(v.asChar()));
+								arrSize++;
+								addCounter++;
+							} else{
+								System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+							}break;
+						default:
+							System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+						
+					}
+				}
+
+				if(counter == addCounter){
+					arr.setSize(arrSize);
+					varManager.addVariable(arr);
+				}
+			}
+			
+			
+		}else{
+			System.err.println("DUPLICATE LOCAL VARIABLE: "+id);
 		}
-		
-		
+
 		return Value.VOID;
 	}
 	
 	@Override 
 	public Value visitArray_assignment(Darth_CoderParser.Array_assignmentContext ctx) { 
 	
+		String id = ctx.array_iden().var_iden().VAR_IDEN().getText();
+		Value index = this.visit(ctx.array_iden().index());
+		if(varManager.isVariableExists(id)){
+			if(index.isInt()){
+				Array arr = (Array) varManager.getVariable(id);
+				if(!arr.isIndexOutOfBounds(index.asInt())){
+					boolean hasError = true;
+					Value v = this.visit(ctx.var());
+					switch(arr.getType()){
+						case Variable.IC:
+							if(!v.getType().equals(Variable.UN) &&  !v.getType().equals(Variable.LE) &&
+							   !v.getType().equals(Variable.SIDE)){
+								Double dVal = Double.parseDouble(v.toString());
+								arr.editArrayValue(index.asInt(),new Value(dVal));
+								hasError = false;
+							} break;
+						case Variable.LE:
+							if(v.getType().equals(Variable.LE) || v.getType().equals(Variable.UN)){
+								arr.editArrayValue(index.asInt(),new Value(v.toString()));
+								hasError = false;
+							}break;
+						case Variable.GC:
+							if(v.getType().equals(Variable.GC)){
+								arr.editArrayValue(index.asInt(),new Value(v.asInt()));
+								hasError = false;
+							}break;
+						case Variable.UN:
+							if(v.getType().equals(Variable.UN)){
+								arr.editArrayValue(index.asInt(),new Value(v.asChar()));
+								hasError = false;
+							}break;
+						default:{
+							String varType = arr.getType();
+							String valType = v.getType();
+							System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+						}
+					}
+					
+					if(hasError){
+						String varType = arr.getType();
+						String valType = v.getType();
+						System.err.println("DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+					}
+				}else{
+					System.err.println("INDEX OUT OF BOUND: "+ index + " array size: "+ arr.getSize());
+				}
+				
+			}else{
+				System.err.println("SYNTAX ERROR: INVALID TOKEN TYPE "+ index.getType() + " should be GalacticCredit");
+			}
+				
+		}else{
+			System.err.println("UNDECLARED VARIABLE: "+id);
+		}
 		
 		return visitChildren(ctx); 
 	}
@@ -667,7 +786,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override public Value visitVarDecVarIdenFourTypes(Darth_CoderParser.VarDecVarIdenFourTypesContext ctx) { 
 		
-		System.out.println("VISIT VAR DEC IDEN");
 		String id = ctx.var_iden().VAR_IDEN().getText();
 		
 		if(!varManager.isVariableExists(id)){
@@ -701,7 +819,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override public Value visitVarDecBoolean(Darth_CoderParser.VarDecBooleanContext ctx) { 
 		Value v = null;
-		System.out.println("PASOK VA DEC BOOLEAN");
 		if(ctx.boolean_statement().var_iden() != null){
 			String id = ctx.boolean_statement().var_iden().VAR_IDEN().getText();
 			if(!varManager.isVariableExists(id)){
@@ -805,16 +922,49 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 
 	
 	@Override 
-	public Value visitVar_iden(Darth_CoderParser.Var_idenContext ctx) { 
-		return new Value(ctx.VAR_IDEN().getText()); 
+	public Value visitArray_iden(Darth_CoderParser.Array_idenContext ctx) { 
+		
+		Value index = this.visit(ctx.index());
+		Value arrVal = null;
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		
+		if(index.isInt()){
+			if(varManager.isVariableExists(id)){
+				Array a = (Array) varManager.getVariable(id);
+				if(!a.isIndexOutOfBounds(index.asInt())){	
+					arrVal = a.getArrayValue(index.asInt());
+				}else{
+					System.err.println("INDEX OUT OF BOUND: "+ index + " array size: "+ a.getSize());
+				}
+			}else{
+				System.err.println("UNDECLARED VARIABLE: "+ id);
+			}
+		
+		}else{
+			System.err.println("SYNTAX ERROR: INVALID TOKEN TYPE "+ index.getType() + " should be GalacticCredit");
+		}
+		
+		return arrVal; 
 	}
+
 	
-	//@Override 
-	//public Value visitVar_iden(Darth_CoderParser.Var_idenContext ctx) { 
-	//	return new Value(ctx.VAR_IDEN().getText()); 
-	//}
-	
-	
+	@Override 
+	public Value visitVar_iden(Darth_CoderParser.Var_idenContext ctx) { 
+		String id = ctx.VAR_IDEN().getText();
+		Value value = null;
+		
+		if(varManager.isVariableExists(id)){
+			value = varManager.getVariableValue(id);
+		}else{
+			System.err.println("UNDECLARED VARIABLE: " + id);
+		}
+		if(value == null) {
+			System.out.println("HELLO?");
+		
+		}
+		
+		return value;
+	}
 	
 	@Override 
 	public Value visitAdditiveExpr(Darth_CoderParser.AdditiveExprContext ctx) { 
@@ -914,17 +1064,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	}
 
 	@Override 
-	public Value visitGroupExpr(Darth_CoderParser.GroupExprContext ctx) { 
-		Value v = this.visit(ctx.expr());
-		
-		if(v.isDouble())
-			return new Value(v.asDouble());
-		else
-			return new Value(v.asInt());
-	}
-	
-
-	@Override 
 	public Value visitArray_open(Darth_CoderParser.Array_openContext ctx) { 
 		return visitChildren(ctx); 
 	}
@@ -941,7 +1080,15 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{
 	
 	@Override 
 	public Value visitIndex(Darth_CoderParser.IndexContext ctx) { 
-		return visitChildren(ctx); 
+		
+		if(ctx.INT_LITERAL() != null){
+			return new Value(Integer.valueOf(ctx.INT_LITERAL().getText())); 
+		}
+		else if (ctx.var_iden() != null){
+			return this.visit(ctx.var_iden());
+		}else{
+			return this.visit(ctx.expr());
+		}
 	}
 	
 	@Override 
