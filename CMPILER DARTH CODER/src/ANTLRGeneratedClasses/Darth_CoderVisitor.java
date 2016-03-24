@@ -67,11 +67,68 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrint(Darth_CoderParser.PrintContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#iterative_con}.
+	 * Visit a parse tree produced by the {@code WhileConditionCodeBlock}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIterative_con(Darth_CoderParser.Iterative_conContext ctx);
+	T visitWhileConditionCodeBlock(Darth_CoderParser.WhileConditionCodeBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileCodeBlock}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileCodeBlock(Darth_CoderParser.WhileCodeBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code While}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile(Darth_CoderParser.WhileContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DoWhileCodeBlockCondition}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoWhileCodeBlockCondition(Darth_CoderParser.DoWhileCodeBlockConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DoWhileCodeBlock}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoWhileCodeBlock(Darth_CoderParser.DoWhileCodeBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DoWhileCondition}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoWhileCondition(Darth_CoderParser.DoWhileConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DoWhile}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoWhile(Darth_CoderParser.DoWhileContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ForConditionCodeBlock}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForConditionCodeBlock(Darth_CoderParser.ForConditionCodeBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ForCondition}
+	 * labeled alternative in {@link Darth_CoderParser#iterative_con}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForCondition(Darth_CoderParser.ForConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Darth_CoderParser#func_call}.
 	 * @param ctx the parse tree
@@ -288,11 +345,19 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVar_iden(Darth_CoderParser.Var_idenContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#incr}.
+	 * Visit a parse tree produced by the {@code Increment}
+	 * labeled alternative in {@link Darth_CoderParser#incr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIncr(Darth_CoderParser.IncrContext ctx);
+	T visitIncrement(Darth_CoderParser.IncrementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Decrement}
+	 * labeled alternative in {@link Darth_CoderParser#incr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecrement(Darth_CoderParser.DecrementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code AdditiveExpr}
 	 * labeled alternative in {@link Darth_CoderParser#expr}.
@@ -357,12 +422,12 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGroupExpr(Darth_CoderParser.GroupExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToVar_Iden}
+	 * Visit a parse tree produced by the {@code VarIden}
 	 * labeled alternative in {@link Darth_CoderParser#var}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToVar_Iden(Darth_CoderParser.ToVar_IdenContext ctx);
+	T visitVarIden(Darth_CoderParser.VarIdenContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code True}
 	 * labeled alternative in {@link Darth_CoderParser#side}.

@@ -771,6 +771,17 @@ public class Darth_CoderParser extends Parser {
 	}
 
 	public static class Iterative_conContext extends ParserRuleContext {
+		public Iterative_conContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_iterative_con; }
+	 
+		public Iterative_conContext() { }
+		public void copyFrom(Iterative_conContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class WhileConditionCodeBlockContext extends Iterative_conContext {
 		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
 		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
 		public ConditionContext condition() {
@@ -782,25 +793,166 @@ public class Darth_CoderParser extends Parser {
 			return getRuleContext(Code_blockContext.class,0);
 		}
 		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
-		public TerminalNode DO() { return getToken(Darth_CoderParser.DO, 0); }
+		public WhileConditionCodeBlockContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitWhileConditionCodeBlock(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ForConditionCodeBlockContext extends Iterative_conContext {
+		public TerminalNode FOR() { return getToken(Darth_CoderParser.FOR, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public Reg_assignmentContext reg_assignment() {
+			return getRuleContext(Reg_assignmentContext.class,0);
+		}
 		public List<TerminalNode> TERMINAL() { return getTokens(Darth_CoderParser.TERMINAL); }
 		public TerminalNode TERMINAL(int i) {
 			return getToken(Darth_CoderParser.TERMINAL, i);
 		}
-		public TerminalNode FOR() { return getToken(Darth_CoderParser.FOR, 0); }
-		public Reg_assignmentContext reg_assignment() {
-			return getRuleContext(Reg_assignmentContext.class,0);
+		public ConditionContext condition() {
+			return getRuleContext(ConditionContext.class,0);
 		}
 		public IncrContext incr() {
 			return getRuleContext(IncrContext.class,0);
 		}
-		public Iterative_conContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public Code_blockContext code_block() {
+			return getRuleContext(Code_blockContext.class,0);
 		}
-		@Override public int getRuleIndex() { return RULE_iterative_con; }
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public ForConditionCodeBlockContext(Iterative_conContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitIterative_con(this);
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitForConditionCodeBlock(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoWhileCodeBlockConditionContext extends Iterative_conContext {
+		public TerminalNode DO() { return getToken(Darth_CoderParser.DO, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public Code_blockContext code_block() {
+			return getRuleContext(Code_blockContext.class,0);
+		}
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public ConditionContext condition() {
+			return getRuleContext(ConditionContext.class,0);
+		}
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode TERMINAL() { return getToken(Darth_CoderParser.TERMINAL, 0); }
+		public DoWhileCodeBlockConditionContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitDoWhileCodeBlockCondition(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoWhileContext extends Iterative_conContext {
+		public TerminalNode DO() { return getToken(Darth_CoderParser.DO, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode TERMINAL() { return getToken(Darth_CoderParser.TERMINAL, 0); }
+		public DoWhileContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitDoWhile(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class WhileCodeBlockContext extends Iterative_conContext {
+		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public Code_blockContext code_block() {
+			return getRuleContext(Code_blockContext.class,0);
+		}
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public WhileCodeBlockContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitWhileCodeBlock(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class WhileContext extends Iterative_conContext {
+		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public WhileContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitWhile(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoWhileCodeBlockContext extends Iterative_conContext {
+		public TerminalNode DO() { return getToken(Darth_CoderParser.DO, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public Code_blockContext code_block() {
+			return getRuleContext(Code_blockContext.class,0);
+		}
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode TERMINAL() { return getToken(Darth_CoderParser.TERMINAL, 0); }
+		public DoWhileCodeBlockContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitDoWhileCodeBlock(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoWhileConditionContext extends Iterative_conContext {
+		public TerminalNode DO() { return getToken(Darth_CoderParser.DO, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public TerminalNode WHILE() { return getToken(Darth_CoderParser.WHILE, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public ConditionContext condition() {
+			return getRuleContext(ConditionContext.class,0);
+		}
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode TERMINAL() { return getToken(Darth_CoderParser.TERMINAL, 0); }
+		public DoWhileConditionContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitDoWhileCondition(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ForConditionContext extends Iterative_conContext {
+		public TerminalNode FOR() { return getToken(Darth_CoderParser.FOR, 0); }
+		public TerminalNode OPEN_SQUARE_BRACKET() { return getToken(Darth_CoderParser.OPEN_SQUARE_BRACKET, 0); }
+		public Reg_assignmentContext reg_assignment() {
+			return getRuleContext(Reg_assignmentContext.class,0);
+		}
+		public List<TerminalNode> TERMINAL() { return getTokens(Darth_CoderParser.TERMINAL); }
+		public TerminalNode TERMINAL(int i) {
+			return getToken(Darth_CoderParser.TERMINAL, i);
+		}
+		public ConditionContext condition() {
+			return getRuleContext(ConditionContext.class,0);
+		}
+		public IncrContext incr() {
+			return getRuleContext(IncrContext.class,0);
+		}
+		public TerminalNode CLOSE_SQUARE_BRACKET() { return getToken(Darth_CoderParser.CLOSE_SQUARE_BRACKET, 0); }
+		public TerminalNode OPEN_BRACES() { return getToken(Darth_CoderParser.OPEN_BRACES, 0); }
+		public TerminalNode CLOSE_BRACES() { return getToken(Darth_CoderParser.CLOSE_BRACES, 0); }
+		public ForConditionContext(Iterative_conContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitForCondition(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -813,6 +965,7 @@ public class Darth_CoderParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
+				_localctx = new WhileConditionCodeBlockContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(209);
@@ -832,6 +985,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new WhileCodeBlockContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(217);
@@ -849,6 +1003,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new WhileContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(224);
@@ -864,6 +1019,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new DoWhileCodeBlockConditionContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(229);
@@ -887,6 +1043,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new DoWhileCodeBlockContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(239);
@@ -908,6 +1065,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 6:
+				_localctx = new DoWhileConditionContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(248);
@@ -929,6 +1087,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 7:
+				_localctx = new DoWhileContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(257);
@@ -948,6 +1107,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 8:
+				_localctx = new ForConditionCodeBlockContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(264);
@@ -975,6 +1135,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 9:
+				_localctx = new ForConditionContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
 				setState(276);
@@ -2766,19 +2927,39 @@ public class Darth_CoderParser extends Parser {
 	}
 
 	public static class IncrContext extends ParserRuleContext {
+		public IncrContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_incr; }
+	 
+		public IncrContext() { }
+		public void copyFrom(IncrContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class DecrementContext extends IncrContext {
+		public Var_idenContext var_iden() {
+			return getRuleContext(Var_idenContext.class,0);
+		}
+		public TerminalNode DECREMENT_OPERATOR() { return getToken(Darth_CoderParser.DECREMENT_OPERATOR, 0); }
+		public TerminalNode TERMINAL() { return getToken(Darth_CoderParser.TERMINAL, 0); }
+		public DecrementContext(IncrContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitDecrement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IncrementContext extends IncrContext {
 		public Var_idenContext var_iden() {
 			return getRuleContext(Var_idenContext.class,0);
 		}
 		public TerminalNode INCREMENT_OPERATOR() { return getToken(Darth_CoderParser.INCREMENT_OPERATOR, 0); }
 		public TerminalNode TERMINAL() { return getToken(Darth_CoderParser.TERMINAL, 0); }
-		public TerminalNode DECREMENT_OPERATOR() { return getToken(Darth_CoderParser.DECREMENT_OPERATOR, 0); }
-		public IncrContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_incr; }
+		public IncrementContext(IncrContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitIncr(this);
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitIncrement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2791,6 +2972,7 @@ public class Darth_CoderParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
 			case 1:
+				_localctx = new IncrementContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(545);
@@ -2802,6 +2984,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new DecrementContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(549);
@@ -3180,14 +3363,14 @@ public class Darth_CoderParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ToVar_IdenContext extends VarContext {
+	public static class VarIdenContext extends VarContext {
 		public Var_idenContext var_iden() {
 			return getRuleContext(Var_idenContext.class,0);
 		}
-		public ToVar_IdenContext(VarContext ctx) { copyFrom(ctx); }
+		public VarIdenContext(VarContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitToVar_Iden(this);
+			if ( visitor instanceof Darth_CoderVisitor ) return ((Darth_CoderVisitor<? extends T>)visitor).visitVarIden(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3230,7 +3413,7 @@ public class Darth_CoderParser extends Parser {
 				}
 				break;
 			case VAR_IDEN:
-				_localctx = new ToVar_IdenContext(_localctx);
+				_localctx = new VarIdenContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(588);

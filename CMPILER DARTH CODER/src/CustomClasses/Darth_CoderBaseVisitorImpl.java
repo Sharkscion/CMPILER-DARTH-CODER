@@ -1,13 +1,9 @@
 package CustomClasses;
 
-import java.util.List;
 import java.util.Scanner;
-
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
 import ANTLRGeneratedClasses.Darth_CoderParser;
-import ANTLRGeneratedClasses.Darth_CoderParser.SingleLiteralContext;
 import ANTLRGeneratedClasses.Darth_CoderParser.ValueContext;
 
 public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value>{

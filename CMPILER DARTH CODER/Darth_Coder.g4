@@ -488,12 +488,7 @@ var
 	: literal											#ToLiteral
 	| func_call											#ToFunc_call
 	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET 	#GroupExpr
-<<<<<<< HEAD
-	| var_iden											#ToVar_Iden
-=======
-	| side												#ToSide
 	| var_iden											#VarIden
->>>>>>> origin/master
 	;
 
 side
