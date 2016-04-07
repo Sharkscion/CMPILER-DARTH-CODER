@@ -1,4 +1,4 @@
-package CustomClasses;
+package Model;
 
 public class FileInput {
 	private String input;

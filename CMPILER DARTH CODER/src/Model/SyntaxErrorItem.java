@@ -1,4 +1,4 @@
-package CustomClasses;
+package Model;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

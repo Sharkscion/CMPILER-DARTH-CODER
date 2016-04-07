@@ -254,7 +254,6 @@ PRINT
 start
 	: func_dec start
 	| INITIATE OPEN_BRACES code_block CLOSE_BRACES
-	//| constant_declaration | var_dec | func_dec | if_conditional | func_call | iterative_con
 	;
 
 code_block

@@ -1,4 +1,4 @@
-package CustomClasses;
+package Model;
 
 import ANTLRGeneratedClasses.Darth_CoderParser.ElseIf_conditionalContext;
 

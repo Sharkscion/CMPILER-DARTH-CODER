@@ -1,4 +1,4 @@
-package CustomClasses;
+package Model;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -9,33 +9,44 @@ import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
-public class ParserErrorListener extends BaseErrorListener
+public class LexerErrorListener extends BaseErrorListener
 {
     private List<SyntaxErrorItem> items;
+    private int errorCount;
     
-    public ParserErrorListener ( )
+    public LexerErrorListener ( )
     {
         this.items = new ArrayList<SyntaxErrorItem>();
+        errorCount = 0;
     }
     
     @Override
     public void syntaxError ( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e )
     {
-    	//System.out.println("LINE: "+ line + " chaPositionInLine: "+ charPositionInLine + " MESSAGE: "+ msg);
-        items.add ( new SyntaxErrorItem ( line, charPositionInLine, msg, offendingSymbol, e ) );
-       // System.out.println("@PARSER ERROR: ["+line+":"+charPositionInLine+"] "+msg);
-    }
- 
-    public boolean hasErrors ( )
-    {
-    	if(this.items.size()>0)
-    		return true;
-   
-        return false;
+    	errorCount ++;
+        this.items.add ( new SyntaxErrorItem ( line, charPositionInLine, msg, offendingSymbol, e ) );
+      //  System.out.println("@LEXICAL ERROR: ["+line+":"+charPositionInLine+"] "+msg);
     }
     
-    public int getErrorCount() {
-    	return items.size();
+    public void setErrorCount(int count){
+    	this.errorCount = count;
+    }
+    
+    public int getErrorCountNum() {
+    	return errorCount;
+    }
+    
+    public boolean hasErrors () 
+    {  	
+    	boolean isResult;
+    	if(this.errorCount!= 0)
+    		isResult = true;
+    	else isResult = false;
+    	return isResult;
+    }
+    
+    public int getErrorCount(){
+    	return this.items.size();
     }
     
     @Override
@@ -45,8 +56,7 @@ public class ParserErrorListener extends BaseErrorListener
         StringBuilder builder = new StringBuilder();
         for ( SyntaxErrorItem s : items )
         {
-        
-            builder.append ( String.format ( "%s", s ) );
+            builder.append ( String.format ( "%s",s ) );
         }
         return builder.toString();
     }
