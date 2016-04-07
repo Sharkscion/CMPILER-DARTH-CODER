@@ -16,18 +16,27 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
     public static final double SMALL_VALUE = 0.00000000001;
     // used to manage variables and their values
     private VariableManager varManager = new VariableManager();
-    
-    // used to denote which conditional statements where evaluated (for if else)
+
+	// used to denote which conditional statements where evaluated (for if else)
     private Boolean isEvaluated;
 	private ArrayList<Observer> obList;
 	private int row;
 	private int col;
 	private boolean isLineByLine;
+	
 	public Darth_CoderBaseVisitorImpl() {
 		obList = new ArrayList<Observer>();
 		row = 0;
 		col = 0;
 		this.isLineByLine = false;
+	}
+	
+    public VariableManager getVarManager() {
+		return varManager;
+	}
+
+	public void setVarManager(VariableManager varManager) {
+		this.varManager = varManager;
 	}
 	
 	public void setLineByLine(boolean isLine){
@@ -749,7 +758,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				}
 
 				if(counter == addCounter){
-					arr.setSize(arrSize);
+					arr.setSize(arrSize, true);
 					varManager.addVariable(arr);
 				}
 			}
@@ -884,7 +893,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				if(ctx.data_type().imperial_credit() != null){
 					if(index.isInt()){
 						a = new Array(Variable.IC, id);
-						a.setSize(index.asInt());
+						a.setSize(index.asInt(), false);
 						varManager.addVariable(a);
 						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
@@ -893,7 +902,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				}else if(ctx.data_type().galactic_credit() != null){
 					if(index.isInt()){
 						a = new Array(Variable.GC, id);
-						a.setSize(index.asInt());
+						a.setSize(index.asInt(), false);
 						varManager.addVariable(a);
 						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
@@ -902,7 +911,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				}else if(ctx.data_type().unit() != null){
 					if(index.isInt()){
 						a = new Array(Variable.UN, id);
-						a.setSize(index.asInt());
+						a.setSize(index.asInt(), false);
 						varManager.addVariable(a);
 						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
@@ -911,7 +920,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				}else if(ctx.data_type().legion() != null){
 					if(index.isInt()){
 						a = new Array(Variable.LE, id);
-						a.setSize(index.asInt());
+						a.setSize(index.asInt(), false);
 						varManager.addVariable(a);
 						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
@@ -946,6 +955,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			
 			if(ctx.data_type().imperial_credit()!= null){
 				arr = new Array(Variable.IC, id);
+				System.out.println("PASOK");
 			}else if(ctx.data_type().galactic_credit()!= null){
 				arr = new Array(Variable.GC, id);
 			}else if(ctx.data_type().unit()!= null){
@@ -972,7 +982,8 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 							   !v.getType().equals(Variable.SIDE)){
 								Double dVal = Double.parseDouble(v.toString());
 								arr.addArrayValue(new Value(dVal));
-								
+								System.out.println("ARR NAME: "+ arr.getVariableName());
+								System.out.println("SIZE OF ARR: " + arr.getMemorySize());
 								notifyObserverSymbol(id+"("+arrSize+")", dVal.toString(), row, isLineByLine);
 								
 								arrSize++;
@@ -996,7 +1007,6 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						case Variable.GC:
 							if(v.getType().equals(Variable.GC)){
 								arr.addArrayValue(new Value(v.asInt()));
-								System.out.println("SIZE OF ARR: " + arr.getSize());
 
 								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
 								
@@ -1021,7 +1031,8 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				}
 
 				if(counter == addCounter){
-					arr.setSize(arrSize);
+					System.out.println("PASOK");
+					arr.setSize(arrSize, true);
 					varManager.addVariable(arr);
 				}
 			}
@@ -1291,7 +1302,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				
 				if(!a.isIndexOutOfBounds(index.asInt())){	
 					arrVal = a.getArrayValue(index.asInt());
-					
+					System.out.println("HELLO: " + arrVal);
 					if(arrVal == null) {
 						arrVal = a.getConstantArrayValue(index.asInt());
 					}

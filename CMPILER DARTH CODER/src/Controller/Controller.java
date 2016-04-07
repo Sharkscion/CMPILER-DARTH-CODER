@@ -72,7 +72,9 @@ public class Controller {
 			if(!lexerErrorListener.hasErrors() && !parserErrorListener.hasErrors()){
 				try{
 					parseTreeWalker = new ParseTreeWalker();//parseTree 
-				    darth_CoderBaseVisitorImpl.visit(parseTree);
+				    darth_CoderBaseVisitorImpl.getVarManager().getVarList().clear();
+					darth_CoderBaseVisitorImpl.visit(parseTree);
+		
 				}catch(Exception e){
 					if(e instanceof ArithmeticException){
 						darth_CoderBaseVisitorImpl.notifyObserverErrorLog(0,0,"PARSER ERROR: "+ e.getMessage());

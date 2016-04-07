@@ -1,12 +1,13 @@
 Initiate{
 
 	ImperialCredit _extra(6).
-	ImperialCredit _ic ()= {5.6, "hide away",6.8, "tan"}.
+	ImperialCredit _ic ()= {5.6, 9.8,6.7,4.5}.
 	ImperialCredit _dc = 5.6.
 	
 	_extra(0) = 8.8.
 	_extra(0) = 9.5.
 	Decode[_extra(0)].
+	Decode[_ic(1)].
  	ForceInstance[![DarkSide]==LightSide && _extra(0) > 9.0]{
  		Decode["Pasok sa una: " + [1/1.0]].
  		

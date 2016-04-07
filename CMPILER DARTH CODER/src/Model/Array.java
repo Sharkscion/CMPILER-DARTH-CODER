@@ -9,6 +9,7 @@ public class Array extends Variable {
 	private Map<Integer, Value> memory;
 	private Map<Integer, Value> constantMemory;
 	private static int counter;
+	private boolean isWithValue;
 	
 	public Array(String type, String variableName) {
 		super(type, variableName);
@@ -16,8 +17,12 @@ public class Array extends Variable {
 		counter = 0;
 		memory = new HashMap<Integer, Value>();
 		constantMemory = new HashMap<Integer, Value>();
+		
 	}
 	
+	public int getMemorySize(){
+		return memory.size();
+	}
 	public void editArrayValue(int index, Value v){
 		memory.replace(index, v);
 	}
@@ -30,6 +35,7 @@ public class Array extends Variable {
 	
 	public Value getArrayValue(int index){
 		
+		System.out.println("INDEX: "+index);
 		if(!isIndexOutOfBounds(index)){
 			return memory.get(index);
 		}
@@ -46,6 +52,8 @@ public class Array extends Variable {
 	}
 	
 	public void addArrayValue(Value v){
+		System.out.println("COUNTER: "+counter);
+		System.out.println("VALUE: "+v.toString());
 		memory.put(counter, v);
 		counter++;
 	}
@@ -59,12 +67,17 @@ public class Array extends Variable {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(int size, boolean isWithValue) {
 		this.size = size;
-		memory.clear();
-		for(int i=0; i<size; i++){
-			memory.put(i, null);
+		
+		if(!isWithValue){
+			System.out.println("setSIZE: "+size);
+			memory.clear();
+			for(int i=0; i<size; i++){
+				memory.put(i, null);
+			}
 		}
+		
 	}
 	
 	public void setConstantSize(int size) {
@@ -78,6 +91,7 @@ public class Array extends Variable {
 	public Map<Integer, Value> getMemory() {
 		return memory;
 	}
+
 	
 	public Map<Integer, Value> getConstantMemory() {
 		return constantMemory;
