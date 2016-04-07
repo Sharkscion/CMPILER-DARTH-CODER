@@ -257,7 +257,21 @@ public class Darth_CoderBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitConstant_declaration(Darth_CoderParser.Constant_declarationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitConstantVarDecFourTypes(Darth_CoderParser.ConstantVarDecFourTypesContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitConstantArrayDecWithValues(Darth_CoderParser.ConstantArrayDecWithValuesContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitConstantVarDecBoolean(Darth_CoderParser.ConstantVarDecBooleanContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

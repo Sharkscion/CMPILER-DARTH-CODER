@@ -234,11 +234,26 @@ public interface Darth_CoderVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParameter(Darth_CoderParser.ParameterContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Darth_CoderParser#constant_declaration}.
+	 * Visit a parse tree produced by the {@code ConstantVarDecFourTypes}
+	 * labeled alternative in {@link Darth_CoderParser#constant_declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstant_declaration(Darth_CoderParser.Constant_declarationContext ctx);
+	T visitConstantVarDecFourTypes(Darth_CoderParser.ConstantVarDecFourTypesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ConstantArrayDecWithValues}
+	 * labeled alternative in {@link Darth_CoderParser#constant_declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstantArrayDecWithValues(Darth_CoderParser.ConstantArrayDecWithValuesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ConstantVarDecBoolean}
+	 * labeled alternative in {@link Darth_CoderParser#constant_declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstantVarDecBoolean(Darth_CoderParser.ConstantVarDecBooleanContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code VarDecFourTypes}
 	 * labeled alternative in {@link Darth_CoderParser#var_dec}.

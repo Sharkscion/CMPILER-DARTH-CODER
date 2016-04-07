@@ -258,6 +258,7 @@ start
 
 code_block
 	: var_dec code_block
+	| constant_declaration code_block
 	| reg_assignment TERMINAL code_block
 	| boolean_assignment TERMINAL code_block
 	| array_assignment TERMINAL code_block
@@ -399,7 +400,9 @@ parameter
 //CONSTANTS!	
 
 constant_declaration
-	: CONST_DEC data_type statement TERMINAL
+	: CONST_DEC data_type reg_assignment TERMINAL		#ConstantVarDecFourTypes
+	| CONST_DEC data_type var_iden ARRAY_OPEN ARRAY_CLOSE EQUAL OPEN_BRACES (value (COMMA value)*)? CLOSE_BRACES TERMINAL	#ConstantArrayDecWithValues
+	| CONST_DEC SIDE boolean_statement TERMINAL	    #ConstantVarDecBoolean
 	;
 	
 //VARIABLE DECLARATIONS!

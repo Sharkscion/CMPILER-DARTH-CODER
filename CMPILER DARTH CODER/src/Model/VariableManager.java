@@ -8,10 +8,12 @@ public class VariableManager {
 	
 	private ArrayList<Variable> varList;
     private Map<String, Value> memory;
+    private Map<String, Value> constantMemory;
 
 	public VariableManager() {
 		this.varList = new ArrayList<Variable>();
 		this.memory = new HashMap<String, Value>();
+		this.constantMemory = new HashMap<String, Value>();
 	}
 	
 	public Variable getVariable(String id){
@@ -48,6 +50,10 @@ public class VariableManager {
 		memory.replace(id, val);
 	}
 	
+	public void addConstantValue(String id, Value val) {
+		constantMemory.put(id, val);
+	}
+	
 	public boolean isDataTypeMatch(String id, Value val){
 		
 		Variable var = getVariable(id);
@@ -62,6 +68,11 @@ public class VariableManager {
 	public Value getVariableValue(String id){
 		return memory.get(id);
 	}
+	
+	public Value getConstantValue(String id) {
+		return constantMemory.get(id);
+	}
+	
 	public boolean isVariableExists(String id){
 		
 		if(getVariable(id) == null){

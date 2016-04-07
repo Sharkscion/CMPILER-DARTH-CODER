@@ -8,10 +8,9 @@ import ANTLRGeneratedClasses.Darth_CoderBaseVisitor;
 import ANTLRGeneratedClasses.Darth_CoderParser;
 import ANTLRGeneratedClasses.Darth_CoderParser.ValueContext;
 import Observer.Observer;
-import Observer.ObserverLine;
 import Observer.Subject;
 
-public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> implements Subject, ObserverLine{
+public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> implements Subject{
 	
 	// used to compare floating point numbers
     public static final double SMALL_VALUE = 0.00000000001;
@@ -44,20 +43,8 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 		
 		if(ctx.code_block() != null){
 			
-			Task task = new Task();
-			if(isLineByLine == false){
-				System.out.println("HELLO");
-				notifyObserverSymbol("", "", ctx.start.getLine());
-				
-				Thread t = new Thread(task);
-				t.start();
-			}
-
-			if(isLineByLine == true)
-			{
-				System.out.println("GE");
-				task.kill();
-			}
+			//if(isLineByLine != false)
+			
 			
 			return this.visit(ctx.code_block());
 		}else
@@ -95,7 +82,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			Variable var = new Variable(Variable.IC, id);
 			varManager.addVariable(var);
 			varManager.addVariableValue(var.getVariableName(), value);
-			notifyObserverSymbol(id, value.asString(), row);
+			notifyObserverSymbol(id, value.asString(), row, isLineByLine);
 		}else{
 			
 			notifyObserverErrorLog(row, col,"DUPLICATE LOCAL VARIABLE: "+id);
@@ -120,7 +107,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			Variable var = new Variable(Variable.GC, id);
 			varManager.addVariable(var);
 			varManager.addVariableValue(var.getVariableName(), value);
-			notifyObserverSymbol(id, value.asString(), row);
+			notifyObserverSymbol(id, value.asString(), row, isLineByLine);
 		}else{
 			notifyObserverErrorLog(row, col, "DUPLICATE LOCAL VARIABLE: "+id);
 		}
@@ -144,7 +131,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			Variable var = new Variable(Variable.UN, id);
 			varManager.addVariable(var);
 			varManager.addVariableValue(var.getVariableName(), value);
-			notifyObserverSymbol(id, value.asString(), row);
+			notifyObserverSymbol(id, value.asString(), row, isLineByLine);
 		}else{
 		
 			notifyObserverErrorLog(row, col, "DUPLICATE LOCAL VARIABLE: "+id);
@@ -169,7 +156,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			Variable var = new Variable(Variable.LE, id);
 			varManager.addVariable(var);
 			varManager.addVariableValue(var.getVariableName(), value);
-			notifyObserverSymbol(id, value.asString(), row);
+			notifyObserverSymbol(id, value.asString(), row, isLineByLine);
 		}else{
 			
 			notifyObserverErrorLog(row, col, "DUPLICATE LOCAL VARIABLE: "+id);
@@ -198,8 +185,12 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				
 				Value val = varManager.getVariableValue(id);
 				
+				if(val == null) {
+					val = varManager.getConstantValue(id);
+				}
+				
 				if(val != null){
-					notifyObserverSymbol(id, val.asString(), row);
+					notifyObserverSymbol(id, val.asString(), row, isLineByLine);
 					notifyObserverOutput(val.toString());
 				}
 				else{
@@ -213,7 +204,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			String id = ctx.array_iden().var_iden().VAR_IDEN().getText();
 			v = this.visit(ctx.array_iden());
 			if(v != null){
-				notifyObserverSymbol(id, v.asString(), row);
+				notifyObserverSymbol(id, v.asString(), row, isLineByLine);
 				notifyObserverOutput(v.toString());
 			}else{
 				notifyObserverErrorLog(row, col, "NULL VALUE: "+ id);
@@ -523,7 +514,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 		if(varManager.isVariableExists(id)) {
 			if(varManager.isDataTypeMatch(id, value)) {
 				varManager.editVariableValue(id, value);
-				notifyObserverSymbol(id, value.asString(), row);
+				notifyObserverSymbol(id, value.asString(), row, isLineByLine);
 			}else{
 				String varType = varManager.getVariable(id).getType();
 				String valType = value.getType();
@@ -549,7 +540,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 		if(varManager.isVariableExists(id)) {
 			if(varManager.isDataTypeMatch(id, value)) {
 				varManager.editVariableValue(id, value);
-				notifyObserverSymbol(id, value.asString(), row);
+				notifyObserverSymbol(id, value.asString(), row, isLineByLine);
 			}else{
 				String varType = varManager.getVariable(id).getType();
 				String valType = value.getType();
@@ -618,8 +609,207 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 	}
 	
 	@Override 
-	public Value visitConstant_declaration(Darth_CoderParser.Constant_declarationContext ctx) { 
-		return visitChildren(ctx);
+	public Value visitConstantVarDecFourTypes(Darth_CoderParser.ConstantVarDecFourTypesContext ctx) { 
+		String id = ctx.reg_assignment().var_iden().VAR_IDEN().getText();
+		Value v = this.visit(ctx.reg_assignment().expr());
+		row = ctx.start.getLine();
+		col = ctx.start.getCharPositionInLine();
+		if(!varManager.isVariableExists(id)){
+			
+			if(ctx.data_type().imperial_credit() != null) {
+				Variable var = new Variable(Variable.IC,id);
+				varManager.addVariable(var);
+				
+				if(v.isDouble()) {
+					varManager.addConstantValue(var.getVariableName(), v);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
+				}
+			}else if(ctx.data_type().galactic_credit() != null){
+				Variable var = new Variable(Variable.GC,id);
+				varManager.addVariable(var);
+				
+				if(v.isInt()) {
+					varManager.addConstantValue(var.getVariableName(), v);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
+				}
+			}else if(ctx.data_type().unit() != null){
+				Variable var = new Variable(Variable.UN,id);
+				varManager.addVariable(var);
+				
+				if(v.isChar()) {
+					varManager.addConstantValue(var.getVariableName(), v);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
+				}
+			}else if(ctx.data_type().legion() != null){
+				Variable var = new Variable(Variable.LE,id);
+				varManager.addVariable(var);
+				
+				if(v.isString()) {
+					varManager.addConstantValue(var.getVariableName(), v);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
+				}
+			}
+		}else{
+			notifyObserverErrorLog(row, col, "DUPLICATE LOCAL VARIABLE: "+id);
+		}
+		
+		if(!varManager.isDataTypeMatch(id, v)) {	
+			String varType = varManager.getVariable(id).getType();
+			String valType = v.getType();
+			notifyObserverErrorLog(row, col,"DATA TYPE MISMATCH: "+ id + " IS " + varType + " WHILE "+v + " IS "+valType);
+		}
+	
+		return v;
+	}
+	
+	
+	@Override 
+	public Value visitConstantArrayDecWithValues(Darth_CoderParser.ConstantArrayDecWithValuesContext ctx) { 
+		String id = ctx.var_iden().VAR_IDEN().getText();
+		
+		row = ctx.start.getLine();
+		col = ctx.start.getCharPositionInLine();
+		
+		if(!varManager.isVariableExists(id)){
+			Array arr = null;
+			int arrSize = 0;
+			
+			if(ctx.data_type().imperial_credit()!= null){
+				arr = new Array(Variable.IC, id);
+			}else if(ctx.data_type().galactic_credit()!= null){
+				arr = new Array(Variable.IC, id);
+			}else if(ctx.data_type().unit()!= null){
+				arr = new Array(Variable.UN, id);
+			}else if(ctx.data_type().legion()!= null){
+				arr = new Array(Variable.LE, id);
+			}		
+			
+			if(arr != null){
+				int counter = 0;
+				int addCounter = 0;
+				String varType = arr.getType();
+				
+				List<Darth_CoderParser.ValueContext> vList = ctx.value();
+				for(Darth_CoderParser.ValueContext value: vList) {
+					
+					counter++;
+					Value v = this.visit(value.var());
+					String valType = v.getType();
+					
+					switch(arr.getType()){
+						case Variable.IC:
+							if(!v.getType().equals(Variable.UN) &&  !v.getType().equals(Variable.LE) &&
+							   !v.getType().equals(Variable.SIDE)){
+								Double dVal = Double.parseDouble(v.toString());
+								//arr.addArrayValue(new Value(dVal));
+								arr.addConstantArrayValue(new Value(dVal));
+								notifyObserverSymbol(id+"("+arrSize+")", dVal.toString(), row, isLineByLine);
+								
+								arrSize++;
+								addCounter++;
+							} else{
+								
+								int line = ctx.start.getLine();
+								int col = ctx.start.getCharPositionInLine();
+								notifyObserverErrorLog(row, col,"DATA TYPE MISMATCH: "+ id + " IS " + varType + " WHILE "+v + " IS "+valType);
+							}break;
+						case Variable.LE:
+							if(v.getType().equals(Variable.LE) || v.getType().equals(Variable.UN)){
+								arr.addConstantArrayValue(new Value(v.toString()));
+								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
+								
+								arrSize++;
+								addCounter++;
+							} else{
+								notifyObserverErrorLog(row, col,"DATA TYPE MISMATCH: "+ id + " IS " + varType + " WHILE "+v + " IS "+valType);
+							}break;
+						case Variable.GC:
+							if(v.getType().equals(Variable.GC)){
+								arr.addConstantArrayValue(new Value(v.asInt()));
+								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
+								
+								arrSize++;
+								addCounter++;
+							} else{
+								notifyObserverErrorLog(row, col,"DATA TYPE MISMATCH: "+ id + " IS " + varType + " WHILE "+v + " IS "+valType);
+							}break;
+						case Variable.UN:
+							if(v.getType().equals(Variable.UN)){
+								arr.addConstantArrayValue(new Value(v.asChar()));
+								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
+								
+								arrSize++;
+								addCounter++;
+							} else{
+								notifyObserverErrorLog(row, col,"DATA TYPE MISMATCH: "+ id + " IS " + varType + " WHILE "+v + " IS "+valType);
+							}break;
+						default:
+							notifyObserverErrorLog(row, col,"DATA TYPE MISMATCH: "+ id + " IS " + varType + " WHILE "+v + " IS "+valType);						
+					}
+				}
+
+				if(counter == addCounter){
+					arr.setSize(arrSize);
+					varManager.addVariable(arr);
+				}
+			}
+			
+			
+		}else{
+			notifyObserverErrorLog(row, col,"DUPLICATE LOCAL VARIABLE: "+id);
+		}
+
+		return Value.VOID;
+	}
+	
+	@Override public Value visitConstantVarDecBoolean(Darth_CoderParser.ConstantVarDecBooleanContext ctx) { 
+		Value v = null;
+		
+		row = ctx.start.getLine();
+		col = ctx.start.getCharPositionInLine();
+		
+		if(ctx.boolean_statement().var_iden() != null){
+			String id = ctx.boolean_statement().var_iden().VAR_IDEN().getText();
+			if(!varManager.isVariableExists(id)){
+				Variable var = new Variable(Variable.SIDE,id);
+				varManager.addVariable(var);
+				varManager.addConstantValue(var.getVariableName(), null);
+				notifyObserverSymbol(id, var.toString(), row, isLineByLine);
+				return Value.VOID;
+			}else{
+				notifyObserverErrorLog(row, col,"DUPLICATE LOCAL VARIABLE: "+id);
+			}
+		}else if (ctx.boolean_statement().boolean_assignment() != null){
+			
+			String id = ctx.boolean_statement().boolean_assignment().var_iden().VAR_IDEN().getText();
+			
+			if(!varManager.isVariableExists(id)){
+				
+				if(ctx.boolean_statement().boolean_assignment().LIGHT_SIDE() != null){
+					Variable var = new Variable(Variable.SIDE,id);
+					v = new Value(true);
+					varManager.addVariable(var);
+					varManager.addConstantValue(var.getVariableName(),v);
+					notifyObserverSymbol(id, var.toString(), row, isLineByLine);
+					
+				}else if(ctx.boolean_statement().boolean_assignment().DARK_SIDE() != null){
+					Variable var = new Variable(Variable.SIDE,id);
+					v = new Value(false);
+					varManager.addVariable(var);
+					varManager.addConstantValue(var.getVariableName(),v);
+					notifyObserverSymbol(id, var.toString(), row, isLineByLine);
+					
+				}else{
+ 					String varType = varManager.getVariable(id).getType();
+					String valType = ctx.boolean_statement().boolean_assignment().getText();
+					notifyObserverErrorLog(row,col,"DATA TYPE MISMATCH: "+ id + " is " + varType + " while "+v + " is "+valType);
+				}
+			}else{
+				notifyObserverErrorLog(row,col,"DUPLICATE LOCAL VARIABLE: "+id);
+			}
+		}
+		
+		return v;
 	}
 	
 	@Override 
@@ -637,7 +827,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				
 				if(v.isDouble()) {
 					varManager.addVariableValue(var.getVariableName(), v);
-					notifyObserverSymbol(id, v.toString(), row);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
 				}
 			}else if(ctx.data_type().galactic_credit() != null){
 				Variable var = new Variable(Variable.GC,id);
@@ -645,7 +835,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				
 				if(v.isInt()) {
 					varManager.addVariableValue(var.getVariableName(), v);
-					notifyObserverSymbol(id, v.toString(), row);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
 				}
 			}else if(ctx.data_type().unit() != null){
 				Variable var = new Variable(Variable.UN,id);
@@ -653,7 +843,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				
 				if(v.isChar()) {
 					varManager.addVariableValue(var.getVariableName(), v);
-					notifyObserverSymbol(id, v.toString(), row);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
 				}
 			}else if(ctx.data_type().legion() != null){
 				Variable var = new Variable(Variable.LE,id);
@@ -661,7 +851,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				
 				if(v.isString()) {
 					varManager.addVariableValue(var.getVariableName(), v);
-					notifyObserverSymbol(id, v.toString(), row);
+					notifyObserverSymbol(id, v.toString(), row, isLineByLine);
 				}
 			}
 		}else{
@@ -696,7 +886,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						a = new Array(Variable.IC, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
-						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row);
+						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
 						hasError = true;
 					}
@@ -705,7 +895,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						a = new Array(Variable.GC, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
-						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row);
+						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
 						hasError = true;
 					}
@@ -714,7 +904,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						a = new Array(Variable.UN, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
-						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row);
+						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
 						hasError = true;
 					}
@@ -723,7 +913,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						a = new Array(Variable.LE, id);
 						a.setSize(index.asInt());
 						varManager.addVariable(a);
-						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row);
+						notifyObserverSymbol(id+"("+index.toString()+")", "no value", row, isLineByLine);
 					}else{
 						hasError = true;
 					}
@@ -782,7 +972,8 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 							   !v.getType().equals(Variable.SIDE)){
 								Double dVal = Double.parseDouble(v.toString());
 								arr.addArrayValue(new Value(dVal));
-								notifyObserverSymbol(id+"("+arrSize+")", dVal.toString(), row);
+								
+								notifyObserverSymbol(id+"("+arrSize+")", dVal.toString(), row, isLineByLine);
 								
 								arrSize++;
 								addCounter++;
@@ -795,7 +986,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						case Variable.LE:
 							if(v.getType().equals(Variable.LE) || v.getType().equals(Variable.UN)){
 								arr.addArrayValue(new Value(v.toString()));
-								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row);
+								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
 								
 								arrSize++;
 								addCounter++;
@@ -805,7 +996,9 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						case Variable.GC:
 							if(v.getType().equals(Variable.GC)){
 								arr.addArrayValue(new Value(v.asInt()));
-								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row);
+								System.out.println("SIZE OF ARR: " + arr.getSize());
+
+								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
 								
 								arrSize++;
 								addCounter++;
@@ -815,7 +1008,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 						case Variable.UN:
 							if(v.getType().equals(Variable.UN)){
 								arr.addArrayValue(new Value(v.asChar()));
-								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row);
+								notifyObserverSymbol(id+"("+arrSize+")", v.toString(), row, isLineByLine);
 								
 								arrSize++;
 								addCounter++;
@@ -863,28 +1056,28 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 								Double dVal = Double.parseDouble(v.toString());
 								arr.editArrayValue(index.asInt(),new Value(dVal));
 								
-								notifyObserverSymbol(id+"("+index.toString()+")", dVal.toString(), row);
+								notifyObserverSymbol(id+"("+index.toString()+")", dVal.toString(), row, isLineByLine);
 								
 								hasError = false;
 							} break;
 						case Variable.LE:
 							if(v.getType().equals(Variable.LE) || v.getType().equals(Variable.UN)){
 								arr.editArrayValue(index.asInt(),new Value(v.toString()));
-								notifyObserverSymbol(id+"("+index.toString()+")", v.toString(), row);
+								notifyObserverSymbol(id+"("+index.toString()+")", v.toString(), row, isLineByLine);
 								
 								hasError = false;
 							}break;
 						case Variable.GC:
 							if(v.getType().equals(Variable.GC)){
 								arr.editArrayValue(index.asInt(),new Value(v.asInt()));
-								notifyObserverSymbol(id+"("+index.toString()+")", v.toString(), row);
+								notifyObserverSymbol(id+"("+index.toString()+")", v.toString(), row, isLineByLine);
 								
 								hasError = false;
 							}break;
 						case Variable.UN:
 							if(v.getType().equals(Variable.UN)){
 								arr.editArrayValue(index.asInt(),new Value(v.asChar()));
-								notifyObserverSymbol(id+"("+index.toString()+")", v.toString(), row);
+								notifyObserverSymbol(id+"("+index.toString()+")", v.toString(), row,isLineByLine);
 								
 								hasError = false;
 							}break;
@@ -929,25 +1122,25 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				Variable var = new Variable(Variable.IC, id);
 				varManager.addVariable(var);
 				varManager.addVariableValue(var.getVariableName(), null);
-				notifyObserverSymbol(id, var.toString(), row);
+				notifyObserverSymbol(id, var.toString(), row,isLineByLine);
 			}
 			else if(ctx.data_type().galactic_credit() != null) {
 				Variable var = new Variable(Variable.GC, id);
 				varManager.addVariable(var);
 				varManager.addVariableValue(var.getVariableName(), null);
-				notifyObserverSymbol(id, var.toString(), row);
+				notifyObserverSymbol(id, var.toString(), row, isLineByLine);
 			}
 			else if(ctx.data_type().unit() != null) {
 				Variable var = new Variable(Variable.UN, id);
 				varManager.addVariable(var);
 				varManager.addVariableValue(var.getVariableName(), null);
-				notifyObserverSymbol(id, var.toString(), row);
+				notifyObserverSymbol(id, var.toString(), row, isLineByLine);
 			}
 			else if(ctx.data_type().legion() != null) {
 				Variable var = new Variable(Variable.LE, id);
 				varManager.addVariable(var);
 				varManager.addVariableValue(var.getVariableName(), null);
-				notifyObserverSymbol(id, var.toString(), row);
+				notifyObserverSymbol(id, var.toString(), row, isLineByLine);
 			}
 		}else{
 			notifyObserverErrorLog(row, col,"DUPLICATE LOCAL VARIABLE: "+id);
@@ -968,7 +1161,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 				Variable var = new Variable(Variable.SIDE,id);
 				varManager.addVariable(var);
 				varManager.addVariableValue(var.getVariableName(), null);
-				notifyObserverSymbol(id, var.toString(), row);
+				notifyObserverSymbol(id, var.toString(), row, isLineByLine);
 				return Value.VOID;
 			}else{
 				notifyObserverErrorLog(row, col,"DUPLICATE LOCAL VARIABLE: "+id);
@@ -984,14 +1177,14 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 					v = new Value(true);
 					varManager.addVariable(var);
 					varManager.addVariableValue(var.getVariableName(),v);
-					notifyObserverSymbol(id, var.toString(), row);
+					notifyObserverSymbol(id, var.toString(), row, isLineByLine);
 					
 				}else if(ctx.boolean_statement().boolean_assignment().DARK_SIDE() != null){
 					Variable var = new Variable(Variable.SIDE,id);
 					v = new Value(false);
 					varManager.addVariable(var);
 					varManager.addVariableValue(var.getVariableName(),v);
-					notifyObserverSymbol(id, var.toString(), row);
+					notifyObserverSymbol(id, var.toString(), row, isLineByLine);
 					
 				}else{
  					String varType = varManager.getVariable(id).getType();
@@ -1033,7 +1226,7 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			
 			if(varManager.isDataTypeMatch(id, value)){
 				varManager.editVariableValue(id, value);
-				notifyObserverSymbol(id, value.toString(), row);
+				notifyObserverSymbol(id, value.toString(), row, isLineByLine);
 				
 			}else{
 				String varType = varManager.getVariable(id).getType();
@@ -1061,12 +1254,12 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 			if(ctx.LIGHT_SIDE() != null){
 				value = new Value(true);
 				varManager.editVariableValue(id, value);
-				notifyObserverSymbol(id, value.toString(), row);
+				notifyObserverSymbol(id, value.toString(), row, isLineByLine);
 				
 			}else if(ctx.DARK_SIDE() != null){
 				value = new Value(false);
 				varManager.editVariableValue(id, value);
-				notifyObserverSymbol(id, value.toString(), row);
+				notifyObserverSymbol(id, value.toString(), row, isLineByLine);
 				
 			}else{
 				String varType = varManager.getVariable(id).getType();
@@ -1094,8 +1287,15 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 		if(index.isInt()){
 			if(varManager.isVariableExists(id)){
 				Array a = (Array) varManager.getVariable(id);
+				
+				
 				if(!a.isIndexOutOfBounds(index.asInt())){	
 					arrVal = a.getArrayValue(index.asInt());
+					
+					if(arrVal == null) {
+						arrVal = a.getConstantArrayValue(index.asInt());
+					}
+					
 				}else{
 					notifyObserverErrorLog(row,col,"INDEX OUT OF BOUND: "+ index + " array size: "+ a.getSize());
 				}
@@ -1121,6 +1321,9 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 		
 		if(varManager.isVariableExists(id)){
 			value = varManager.getVariableValue(id);
+			if(value == null) {
+				value = varManager.getConstantValue(id);
+			}
 		}else{
 			notifyObserverErrorLog(row,col,"UNDECLARED VARIABLE: " + id);
 		}
@@ -1340,15 +1543,9 @@ public class Darth_CoderBaseVisitorImpl extends Darth_CoderBaseVisitor<Value> im
 	}
 
 	@Override
-	public void notifyObserverSymbol(String varname, String val, int position) {
+	public void notifyObserverSymbol(String varname, String val, int position, boolean isLineByLine) {
 		// TODO Auto-generated method stub
 		for(Observer o : obList)
 			o.updateSymbolTable(varname, val, position, isLineByLine);
-	}
-
-	@Override
-	public void runLineByLine(boolean isLineByLine) {
-		// TODO Auto-generated method stub
-		this.isLineByLine = isLineByLine;
 	}
 }

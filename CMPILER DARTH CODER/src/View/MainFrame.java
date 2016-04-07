@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,8 +26,6 @@ import javax.swing.text.Highlighter.HighlightPainter;
 import net.miginfocom.swing.MigLayout;
 import Controller.Controller;
 import Observer.Observer;
-import Observer.ObserverLine;
-import Observer.SubjectLine;
 
 public class MainFrame extends JFrame implements Observer, ActionListener{
 	
@@ -57,12 +54,15 @@ public class MainFrame extends JFrame implements Observer, ActionListener{
 		
 		this.con = con;
 		this.con.registerObserver(this);
+
 		panelContent = new JSplitPane();
 		getContentPane().add(panelContent, BorderLayout.CENTER);
 		
 /************
  * GUI CODE AREA START
  * ************/
+		
+	
 		
 		panelCodeArea = new JPanel();
 		panelCodeArea.setBorder(new TitledBorder(null, "Code Area", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -177,7 +177,6 @@ public class MainFrame extends JFrame implements Observer, ActionListener{
 		    // If Nimbus is not available, you can set the GUI to another look and feel.
 		}
 		
-		reset();
 		
 		setBackground(Color.gray);
 		setSize(1300, 650);
@@ -222,7 +221,11 @@ public class MainFrame extends JFrame implements Observer, ActionListener{
 		} catch (BadLocationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}		
+		}
+		
+			
+		
+		
 	}
 
 	public void reset(){
@@ -231,16 +234,16 @@ public class MainFrame extends JFrame implements Observer, ActionListener{
 		panelLog.removeAll();
 		panelOutput.removeAll();
 	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == btnDebug){
-			this.con.executeCode(txtAreaCodeArea.getText().toString());
+			
 		}else if(e.getSource() == btnRun){
 			reset();
 			this.con.executeCode(txtAreaCodeArea.getText().toString());
 		}
+		
 	}
 
 	@Override
@@ -253,6 +256,5 @@ public class MainFrame extends JFrame implements Observer, ActionListener{
 		panelSymbol.revalidate();	
 		
 	}
-
 
 }

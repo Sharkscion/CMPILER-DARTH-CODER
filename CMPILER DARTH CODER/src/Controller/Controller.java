@@ -1,7 +1,5 @@
 package Controller;
 
-import java.util.ArrayList;
-
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -15,10 +13,8 @@ import Model.Darth_CoderBaseVisitorImpl;
 import Model.LexerErrorListener;
 import Model.ParserErrorListener;
 import Observer.Observer;
-import Observer.ObserverLine;
-import Observer.SubjectLine;
 
-public class Controller implements SubjectLine{
+public class Controller {
 
 	private LexerErrorListener lexerErrorListener;
 	private ParserErrorListener parserErrorListener;
@@ -29,7 +25,6 @@ public class Controller implements SubjectLine{
 	private ANTLRInputStream inputStream;
 	private CommonTokenStream tokenStream;
 	private ParseTree parseTree;
-	private ArrayList<ObserverLine> oLineList;
 	
 	
     public Controller(){
@@ -43,8 +38,7 @@ public class Controller implements SubjectLine{
     }
     
 	public void executeCode(String sourceCode){
-
-		this.oLineList = new ArrayList<ObserverLine>();
+		
 		inputStream = new ANTLRInputStream(sourceCode);
 		lexerErrorListener = new LexerErrorListener();
 		
@@ -78,10 +72,7 @@ public class Controller implements SubjectLine{
 			if(!lexerErrorListener.hasErrors() && !parserErrorListener.hasErrors()){
 				try{
 					parseTreeWalker = new ParseTreeWalker();//parseTree 
-					registerObserver(darth_CoderBaseVisitorImpl);
-					darth_CoderBaseVisitorImpl.visit(parseTree);
-					notifyObserver(true);
-					
+				    darth_CoderBaseVisitorImpl.visit(parseTree);
 				}catch(Exception e){
 					if(e instanceof ArithmeticException){
 						darth_CoderBaseVisitorImpl.notifyObserverErrorLog(0,0,"PARSER ERROR: "+ e.getMessage());
@@ -89,28 +80,5 @@ public class Controller implements SubjectLine{
 				}
 			}
 		}
-	}
-	
-
-	@Override
-	public void registerObserver(ObserverLine o) {
-		// TODO Auto-generated method stub
-		oLineList.add(o);
-		
-	}
-
-	@Override
-	public void unRegisterObserver(ObserverLine o) {
-		// TODO Auto-generated method stub
-		oLineList.remove(o);
-		
-	}
-
-	@Override
-	public void notifyObserver(boolean isRunByLine) {
-		// TODO Auto-generated method stub
-		for(ObserverLine ol : oLineList)
-			ol.runLineByLine(isRunByLine);
-		
 	}
 }

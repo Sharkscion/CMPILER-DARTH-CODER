@@ -2,7 +2,7 @@ package Observer;
 
 public interface SubjectLine {
 
-	public void registerObserver(ObserverLine o);
-	public void unRegisterObserver(ObserverLine o);
-	public void notifyObserver(boolean isRunByLine);
+	public void registerObserver(Observer o);
+	public void unRegisterObserver(Observer o);
+	public void notifyObserver(String log);
 }
