@@ -4,5 +4,8 @@
 /Darth_CoderBaseVisitor.java
 /Darth_CoderParser.java
 /Darth_CoderVisitor.java
+/View/
+/Observer/
+/Model/
+/Controller/
 /ANTLRGeneratedClasses/
-/CustomClasses/
